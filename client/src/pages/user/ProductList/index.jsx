@@ -53,23 +53,23 @@ const Index = () => {
         sx={{ margin: '0 0 0 52px' }}
       >
         <Tab icon={<BorderAllRoundedIcon />} label="All" />
-        <Tab icon={<ChairOutlinedIcon />} label="furniture" value={'657aaffb3f271280447a981e'} />
-        <Tab icon={<DiamondOutlinedIcon />} label="jewelry" value={'657ab151882b69b231d90967'} />
-        <Tab icon={<ColorLensOutlinedIcon />} label="Art" value={'657ab1ed0e5d8db499a25dcc'} />
-        <Tab icon={<KitchenOutlinedIcon />} label="kitchen" value={'657ab1fd0e5d8db499a25dcf'} />
-        <Tab icon={<HomeOutlinedIcon />} label="Home Decor" value={'657ab2180e5d8db499a25dd2'} />
-        <Tab icon={<BathtubOutlinedIcon />} label="Bathroom" value={'657ab2270e5d8db499a25dd5'} />
-        <Tab icon={<YardOutlinedIcon />} label="gardening" value={'657ab23c0e5d8db499a25dd8'} />
+        <Tab icon={<ChairOutlinedIcon />} label="furniture" value={'659ed618577e69c7d04116cb'} />
+        <Tab icon={<DiamondOutlinedIcon />} label="jewelry" value={'659ed6bd577e69c7d04116cd'} />
+        <Tab icon={<ColorLensOutlinedIcon />} label="Art" value={'659ed733577e69c7d04116cf'} />
+        <Tab icon={<KitchenOutlinedIcon />} label="kitchen" value={'659ed77e577e69c7d04116d1'} />
+        <Tab icon={<HomeOutlinedIcon />} label="Home Decor" value={'659ed7d8577e69c7d04116d3'} />
+        <Tab icon={<BathtubOutlinedIcon />} label="Bathroom" value={'659ed819577e69c7d04116d5'} />
+        <Tab icon={<YardOutlinedIcon />} label="gardening" value={'659ed869577e69c7d04116d7'} />
         <Tab
           icon={<DesignServicesOutlinedIcon />}
           label="Stationary"
-          value={'657ab2500e5d8db499a25ddb'}
+          value={'659ed8c2577e69c7d04116d9'}
         />
         <Tab icon={<CableOutlinedIcon />} label="electronic" value={'657ab27c0e5d8db499a25de1'} />
         <Tab
           icon={<ExtensionOutlinedIcon />}
           label="Toy and game"
-          value={'657ab2680e5d8db499a25dde'}
+          value={'659ed9bc577e69c7d04116db'}
         />
       </Tabs>
 

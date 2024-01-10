@@ -43,14 +43,14 @@ const ideaCards = [
   },
   {
     link: 'https://www.youtube.com/watch?v=2rhZ7lzaU4Y',
-    image:
-      'https://i.ytimg.com/vi/0Yacj2MOzbU/maxresdefault.jpg',
+    image: 'https://i.ytimg.com/vi/0Yacj2MOzbU/maxresdefault.jpg',
     title: '4 Easy Candle Making tutorial',
     description: 'candle making tutorial diy candle making for beginners art and craft',
   },
 ];
 
 function HomePage() {
+  const token = JSON.parse(localStorage.getItem('token'));
   // fetch category data
   const {
     data: dataCategories,
@@ -58,7 +58,6 @@ function HomePage() {
     isLoading: fetchCategoriesLoading,
   } = useFetch4CategoriesQuery();
   const categories = dataCategories?.data?.docs;
-  console.log(categories)
 
   const {
     data: dataProducts,
@@ -66,7 +65,6 @@ function HomePage() {
     isLoading: fetchProductsLoading,
   } = useFetch4PopularProductsQuery();
   const products = dataProducts?.data?.products;
-  console.log(products)
 
   // error handle for category
   if (fetchCategoriesLoading) {
@@ -106,11 +104,19 @@ function HomePage() {
           >
             Shop our wide selection of DIY materials and get inspired to create something amazing
           </Typography>
-          <Link to={'/products'}>
-            <Button variant="contained" color="primary">
-              Shop Now
-            </Button>
-          </Link>
+          {token === null ? (
+            <Link to={'/login'}>
+              <Button variant="contained" color="primary">
+                Login
+              </Button>
+            </Link>
+          ) : (
+            <Link to={'/products'}>
+              <Button variant="contained" color="primary">
+                Shop Now
+              </Button>
+            </Link>
+          )}
         </Container>
       </div>
 
@@ -168,7 +174,7 @@ function HomePage() {
         </Typography>
         <Grid container spacing={2}>
           {ideaCards.map((ideaCard, index) => (
-            <Grid item xs={12}  key={index}>
+            <Grid item xs={12} key={index}>
               <IdeaCard
                 link={ideaCard.link}
                 image={ideaCard.image}
@@ -199,11 +205,11 @@ function HomePage() {
             className="community-image"
           />
           <div className="d-flex button-text">
-            <Link to='/community'>
-            <IconButton size="small">
-              Community
-              <ArrowForwardIcon />
-            </IconButton>
+            <Link to="/community">
+              <IconButton size="small">
+                Community
+                <ArrowForwardIcon />
+              </IconButton>
             </Link>
           </div>
         </Container>

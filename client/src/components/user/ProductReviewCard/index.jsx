@@ -11,7 +11,7 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 
 const Index = ({ review, image }) => {
-  const username = JSON.parse(localStorage.getItem('user')).username;
+  console.log(review)
   return (
     <></>
     // <Card elevation={1} color="primary" sx={{ backgroundColor: '#DEDEDE', marginBottom: '8px' }}>

@@ -78,7 +78,7 @@ const CreateShop = () => {
       <h1>{formData.id}</h1>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="d-flex j-spacebtw itemcenter header-space">
-          <Typography typography="h1">Edit Shop</Typography>
+          <Typography typography="h1">Create Shop</Typography>
         </div>
         <Grid container className="space-grid">
           <Grid item xs={9}>
@@ -158,28 +158,6 @@ const CreateShop = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="space-content">
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label"> Owner</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={formData.owner}
-                    label="owner"
-                    name="owner"
-                    onChange={handleChange}
-                  >
-                    {shopCandidate &&
-                      shopCandidate.data.shopsOwner.map((c) => {
-                        return (
-                          <MenuItem key={c.id} value={c.id}>
-                            {c.username}
-                          </MenuItem>
-                        );
-                      })}
-                  </Select>
-                </FormControl>
-              </div>
             </Paper>
           </Grid>
           <div className="space-content">
@@ -198,7 +176,7 @@ const CreateShop = () => {
               </Button>
             </Link>
             <Button variant="contained" color="view" type="submit">
-              Save Product
+              Create Shop
             </Button>
             {addShopLoading && <div>Adding shop...</div>}
             {addShopError && <div>Error adding shop!</div>}
