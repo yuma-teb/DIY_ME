@@ -5,7 +5,7 @@ import { useState } from 'react';
 import ProductList from './ProductList';
 import ProductListByCategory from './ProductListByCategory';
 import { Container, Typography, Grid, IconButton, Tabs, Tab, Menu, MenuItem } from '@mui/material';
-import '../Homepage/homepage.css';
+import '../Homepage/Homepage.css';
 
 // category icon
 import BorderAllRoundedIcon from '@mui/icons-material/BorderAllRounded';
@@ -29,13 +29,13 @@ const Index = () => {
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [sorted, setSorted] = useState('')
+  const [sorted, setSorted] = useState('');
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (value) => {
-    setSorted(value)
+    setSorted(value);
     setAnchorEl(null);
   };
 
@@ -98,14 +98,24 @@ const Index = () => {
                   'aria-labelledby': 'basic-button',
                 }}
               >
-                <MenuItem value={'-sold'} onClick={() => handleClose('-sold')}>Popular</MenuItem>
-                <MenuItem value={'price'} onClick={() => handleClose('price')}>Low to High Price</MenuItem>
-                <MenuItem value={'-price'} onClick={() => handleClose('-price')}>High to Low Price</MenuItem>
+                <MenuItem value={'-sold'} onClick={() => handleClose('-sold')}>
+                  Popular
+                </MenuItem>
+                <MenuItem value={'price'} onClick={() => handleClose('price')}>
+                  Low to High Price
+                </MenuItem>
+                <MenuItem value={'-price'} onClick={() => handleClose('-price')}>
+                  High to Low Price
+                </MenuItem>
               </Menu>
             </div>
           </Grid>
         </Grid>
-        {value !== 0 ? <ProductListByCategory categoryId={value} sorted={sorted} /> : <ProductList sorted={sorted}/>}
+        {value !== 0 ? (
+          <ProductListByCategory categoryId={value} sorted={sorted} />
+        ) : (
+          <ProductList sorted={sorted} />
+        )}
       </Container>
     </>
   );

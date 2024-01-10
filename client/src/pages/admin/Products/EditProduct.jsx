@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './product.css';
+import './Product.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -175,7 +175,7 @@ const EditProduct = () => {
 
   return (
     <>
-      <Container sx={{marginTop: '32px'}}>
+      <Container sx={{ marginTop: '32px' }}>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="d-flex j-spacebtw itemcenter header-space">
             <Typography typography="h1">Edit Product</Typography>

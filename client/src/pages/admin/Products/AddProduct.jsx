@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './product.css';
+import './Product.css';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -108,7 +108,7 @@ const AddProductPage = () => {
     });
 
     if (shop !== null) {
-      formDataWithImages.append('shop', shop)
+      formDataWithImages.append('shop', shop);
     }
 
     formDataWithImages.append('name', product.name);
@@ -132,7 +132,7 @@ const AddProductPage = () => {
 
   return (
     <>
-      <Container sx={{marginTop: '32px'}}>
+      <Container sx={{ marginTop: '32px' }}>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="d-flex j-spacebtw itemcenter header-space">
             <Typography typography="h1">Add Product</Typography>

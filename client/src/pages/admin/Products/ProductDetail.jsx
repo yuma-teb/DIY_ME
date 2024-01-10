@@ -1,5 +1,5 @@
 import React from 'react';
-import './product.css';
+import './Product.css';
 import { useFetchProductByIdQuery } from '../../../redux/store';
 import { useParams } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
@@ -51,7 +51,7 @@ const ProductDetail = () => {
   }
   const resImage = data?.data?.img || [];
   const resProduct = data?.data?.product || [];
-  console.log(resProduct)
+  console.log(resProduct);
   const totalStock = (resProduct.variations || []).reduce(
     (total, variation) => total + variation.stock,
     0,
@@ -89,7 +89,7 @@ const ProductDetail = () => {
 
   return (
     <>
-      <Container sx={{marginTop: '32px'}}>
+      <Container sx={{ marginTop: '32px' }}>
         <div className="d-flex j-spacebtw itemcenter header-space">
           <Typography typography="h1">Product details</Typography>
           <div className="d-flex j-spacebtw itemcenter btn-product">
@@ -152,7 +152,7 @@ const ProductDetail = () => {
               <div className="space-content">
                 <Typography typography="body1">
                   <span className="nonAction-color">Status : </span>
-                  {resProduct.isActive ? 'Active':'Inactive'}
+                  {resProduct.isActive ? 'Active' : 'Inactive'}
                 </Typography>
               </div>
             </div>
