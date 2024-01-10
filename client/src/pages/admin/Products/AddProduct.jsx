@@ -119,13 +119,8 @@ const AddProductPage = () => {
     formDataWithImages.append('variations', JSON.stringify(product.variations));
     formDataWithImages.append('price', lowestPrice);
     formDataWithImages.append('stock', totalStock);
-    formDataWithImages.append('shop', shop);
 
     await addProductMutation(formDataWithImages);
-    // if (addProductError) {
-    //   console.log('Error adding product:', addProductError);
-    //   return;
-    // }
     dispatch(clearVariations());
     navigate('/shop/product');
   };

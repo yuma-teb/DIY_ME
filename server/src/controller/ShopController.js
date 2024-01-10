@@ -8,7 +8,10 @@ const User = require('../models/UserModel');
 const ErrorHandler = require('../utils/ErrorHandler');
 const catchError = require('../middleware/CatchError');
 const { getImage } = require('../utils/GetImageLink');
-const { uploadSingleImageToS3, randomImagesName } = require('../utils/SendFile');
+const {
+  uploadSingleImageToS3,
+  randomImagesName,
+} = require('../utils/SendFile');
 const factoryHandler = require('./FactoryHandler');
 const replaceContent = require('../view/ReplaceScript');
 const { sendEmail } = require('../utils/Mailing');
@@ -101,7 +104,11 @@ module.exports = {
       });
       console.log(newShop);
       uploadSingleImageToS3(req, image);
-      await newShop.save();
+      const shop = await newShop.save();
+      const updatedMe = await User.findByIdAndUpdate(
+        { _id: shopUser.id },
+        { shop: shop.id }
+      );
       const verifiedlink = `${process.env.BACKEND_URL}/api/v1/users/verify/${emailVerifiedToken}`;
       const data = {
         VERIFYLINK: verifiedlink,
