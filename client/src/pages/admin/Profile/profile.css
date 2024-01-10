@@ -1,0 +1,25 @@
+.non-action {
+  color: #808080;
+}
+
+.self-end {
+  align-self: right;
+}
+
+.profile-test {
+  border-radius: 100%;
+  width: 120px;
+  height: 120px;
+  /* background-color: #808080; */
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100%;
+}
+
+.edit-btn {
+  justify-content: flex-end;
+}

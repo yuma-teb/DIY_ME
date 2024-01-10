@@ -1,0 +1,16 @@
+.MuiButton-text.dashbordbutton {
+  padding: 0;
+  background-color: aquamarine;
+}
+
+.top {
+  padding: 24px;
+}
+
+.link {
+  text-decoration-line: none;
+}
+
+.spanText {
+  color: black;
+}

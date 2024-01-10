@@ -1,0 +1,24 @@
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  display: none;
+}
+
+.j-spacearound {
+  justify-content: space-around;
+}
+
+.user-modal {
+  margin-right: 10px;
+}
+
+.userList-cards {
+  margin: 20px 0px;
+}
+
+.search-dropdown {
+  max-height: 300px;
+  overflow-x: auto;
+  background-color: #ffff;
+}

@@ -1,0 +1,65 @@
+.hero-section {
+  position: relative;
+  width: 375px;
+  height: 455px;
+  margin: 56px 0 8px 0;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.relative {
+    position: relative;
+}
+
+.category-card {
+  width: 167px;
+}
+
+.category-image {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.product-card-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.button-text {
+  justify-content: end;
+  margin: 8px 0;
+}
+
+.idea-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.community-section {
+  width: 375px;
+  height: 680px;
+  margin-top: 24px;
+  background-color: #F3D8C7;
+}
+
+.community-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin: 20px 0 8px 0;
+}

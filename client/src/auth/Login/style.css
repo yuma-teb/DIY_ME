@@ -1,0 +1,16 @@
+body {
+  width: 100%;
+}
+.login-success {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+.danger-icon {
+  color: red;
+}
+
+.full-width-alert {
+  width: 100%;
+}
