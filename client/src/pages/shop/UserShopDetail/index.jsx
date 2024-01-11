@@ -30,7 +30,11 @@ const Index = () => {
       <Container sx={{ marginTop: '72px' }}>
         <Typography typography={'title'}>{name}</Typography>
         <Typography typography={'text'}>{description}</Typography>
-        {cover ? <img src={cover} alt="" /> : <div>Image not available</div>}
+        {cover ? (
+            <img src={cover} alt="" style={{width: '100%', height: '200px', objectFit: 'cover'}}/>
+        ) : (
+          <div>Image not available</div>
+        )}
         <Typography typography={'section'} sx={{ marginTop: '32px', marginBottom: '16px' }}>
           Products From Shop
         </Typography>

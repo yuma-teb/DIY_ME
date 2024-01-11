@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.1",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.2",
+    "better-react-carousel": "^1.1.2",
     "chart.js": "^4.4.0",
     "dompurify": "^3.0.6",
     "eslint-config-airbnb": "^19.0.4",

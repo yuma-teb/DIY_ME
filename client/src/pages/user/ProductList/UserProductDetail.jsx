@@ -19,7 +19,7 @@ import {
   Rating,
   Alert,
 } from '@mui/material';
-import { Carousel } from 'react-carousel-minimal';
+import Carousel from 'better-react-carousel';
 import { openOverlay } from '../../../redux/slices/VariationOverlaySlice';
 import ProductReview from '../../../components/user/ProductReviewCard';
 
@@ -38,7 +38,7 @@ const ProductDetail = () => {
   const [productReview, setProductReview] = useState([]);
   const [productReviewImg, setProductReviewImg] = useState([]);
   const [fetchData, setFetchData] = useState(false);
-  const [variation, setVariation] = useState([])
+  const [variation, setVariation] = useState([]);
 
   // fetching product by id
   const {
@@ -67,12 +67,9 @@ const ProductDetail = () => {
       setProductReviewImg(resImageReview);
       setFetchData(true);
       const variationLength = resProduct.variations;
-      setVariation(variationLength)
+      setVariation(variationLength);
     }
   }, [dataProduct, dataProductReview]);
-
-  // map array of image of product
-  let productImage = productImg.map((image) => ({ image }));
 
   // fetching product data by category
   const {
@@ -127,13 +124,13 @@ const ProductDetail = () => {
   return (
     <>
       <div className="carousel-img">
-        <Carousel
-          data={productImage}
-          width="375px"
-          height="300px"
-          slideBackgroundColor="darkgrey"
-          slideImageFit="cover"
-        />
+        <Carousel>
+          {productImg.map((img) => (
+            <Carousel.Item>
+              <img className="carousel-item" src={img} />
+            </Carousel.Item>
+          ))}
+        </Carousel>
       </div>
       <Paper style={marginButtom}>
         <Container>
