@@ -1,0 +1,12 @@
+.payment-radio {
+    display: flex;
+    flex-direction: column;
+}
+.payment{
+    display: flex;
+    flex-direction: column;
+    font-size: large;
+    margin-top: 10px;
+    padding: 20px;
+    gap: 20px;
+}

@@ -32,11 +32,13 @@ const Navbar = ({ toggleSidebar }) => {
               <SearchIcon />
             </IconButton>
           </Link>
-          <IconButton>
-            <Badge badgeContent={cartItemCount} color="error">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
+          <Link to={'/cart'}>
+            <IconButton>
+              <Badge badgeContent={cartItemCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          </Link>
         </div>
       </Toolbar>
     </AppBar>

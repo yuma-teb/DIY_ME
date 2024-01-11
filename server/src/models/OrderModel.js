@@ -1,5 +1,10 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-console */
+/* eslint-disable array-callback-return */
 /* eslint-disable arrow-body-style */
 const mongoose = require('mongoose');
+const Product = require('./ProductModel');
 
 const orderSchema = new mongoose.Schema(
   {
@@ -16,17 +21,28 @@ const orderSchema = new mongoose.Schema(
     paymentMethod: {
       type: String,
     },
+    shippingAddress: {
+      address: {
+        type: String,
+        require: [true, 'Delivery address must provide'],
+      },
+      city: {
+        type: String,
+        require: [true, 'City must provide'],
+      },
+    },
     orderItems: [
       {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: 'Product',
+        product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+        quantity: { type: Number },
+        variations: {
+          name: String,
+          attribute: String,
+          price: Number,
+          stock: Number,
+          _id: mongoose.Schema.Types.ObjectId,
         },
-        qty: {
-          type: Number,
-          default: 1,
-        },
+        variationIndex: { type: Number },
       },
     ],
     status: {
@@ -46,6 +62,18 @@ const orderSchema = new mongoose.Schema(
     },
     orderCompleted: {
       type: Boolean,
+      default: false,
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
+    paidAt: {
+      type: Date,
+    },
+    isDelivered: {
+      type: Boolean,
+      required: true,
       default: false,
     },
     deliveredAt: {
@@ -70,43 +98,57 @@ orderSchema.pre(/^find/, function (next) {
     .populate({
       path: 'fromShop',
       model: 'Shop',
-      select: 'name phonenumber',
+      select: 'name',
     })
     .populate({
       path: 'orderItems',
-      populate: {
-        path: 'product',
-        model: 'Product',
-        select: 'name images price productSummary ratingAverage',
-      },
+      model: 'Cart',
+      select: '-user',
     });
   next();
 });
+orderSchema.virtual('totalAmount').get(function () {
+  // // Check if orderItems is defined
+  // if (!this.orderItems || !Array.isArray(this.orderItems)) {
+  //   return 0; // or handle the case when orderItems or cartItems is not defined
+  // }
 
-// eslint-disable-next-line func-names
-// orderSchema.virtual('totalAmount').get(function () {
-//   const orderTotalAmount = this.orderItems.reduce((total, item) => {
-//     return total + item.qty * item.product.price;
-//   }, 0);
-//   return orderTotalAmount;
-// });
+  const orderTotal = this.orderItems.reduce((total, item) => {
+    // Check if item is defined and has the expected properties
+    if (item && item.quantity && item.variations && item.variations.price) {
+      return total + item.quantity * item.variations.price;
+    }
+    return total;
+  }, 0);
 
-orderSchema.pre('save', function (next) {
-  if (!this.isModified('status')) {
-    return next();
+  return orderTotal.toFixed(2);
+});
+orderSchema.pre('save', async function (next) {
+  try {
+    // Iterate through orderItems and update product stock
+    for (const orderItem of this.orderItems) {
+      const product = await Product.findById(orderItem.product);
+
+      if (!product) {
+        throw new Error('Product not found');
+      }
+
+      // Check if there is enough stock for the order
+      if (orderItem.quantity > product.variations.stock) {
+        throw new Error('Insufficient stock for the product');
+      }
+
+      // Update product stock
+      product.variations.stock -= orderItem.quantity;
+      await product.save();
+    }
+
+    next();
+  } catch (error) {
+    next(error);
   }
-
-  const isValidStatus = this.schema.path('status').enumValues.includes(this.status);
-
-  if (!isValidStatus) {
-    const allowedStatusValues = this.schema.path('status').enumValues.join(', ');
-    const errorMessage = `Invalid 'status' value. Allowed values are: ${allowedStatusValues}`;
-
-    return next(new Error(errorMessage));
-  }
-
-  next();
 });
 
 const Order = mongoose.model('Order', orderSchema);
+
 module.exports = Order;

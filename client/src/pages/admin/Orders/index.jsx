@@ -32,16 +32,14 @@ function OrderPage() {
     data: allOrdersData,
     error: fetchOrdersError,
     isLoading: fetchOrdersLoading,
-    refetch,
+  
   } = useFetchAllOrdersQuery();
   const [deleteById, { error: deleteOrderError, isLoading: deleteOrderLoading }] =
     useDeleteOrderByIdMutation();
   const totalOrders = allOrdersData?.data?.result;
   const orders = allOrdersData?.data?.docs || [];
+  console.log(orders);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -67,7 +65,6 @@ function OrderPage() {
   const handleDelete = async (orderId) => {
     deleteById(orderId);
     setDialog(null);
-    await refetch();
   };
 
   const columns = [
@@ -128,7 +125,7 @@ function OrderPage() {
   }
 
   const ccyFormat = (num) => {
-    return `${num.toFixed(2)}`;
+    return `${num}`;
   };
   const createData = (id, product, date, user, total, payment, shop, status) => {
     return { id, product, date, user, total, payment, shop, status };
@@ -137,14 +134,40 @@ function OrderPage() {
     const { _id, totalAmount, paymentMethod, createdAt, user, orderItems, fromShop, status } =
       order;
     const date = new Date(createdAt).toLocaleDateString('en-us');
-    const productName = orderItems?.[0]?.product?.name || 'Product Name Not Available';
+    const createdAtTime = new Date(createdAt);
+    const currentTime = new Date();
+    const timeDifferenceInSeconds = Math.floor((currentTime - createdAtTime) / 1000);
+
+    let timeDifference;
+    let timeUnit;
+
+    if (timeDifferenceInSeconds < 60) {
+      timeDifference = timeDifferenceInSeconds;
+      timeUnit = `${timeDifference} seconds ago`;
+    } else if (timeDifferenceInSeconds < 3600) {
+      timeDifference = Math.floor(timeDifferenceInSeconds / 60);
+      timeUnit = `${timeDifference} minutes ago`;
+    } else if (timeDifferenceInSeconds < 86400) {
+      timeDifference = Math.floor(timeDifferenceInSeconds / 3600);
+      timeUnit = `${timeDifference} hours ago`;
+    } else if (timeDifferenceInSeconds < 604800) {
+      timeDifference = Math.floor(timeDifferenceInSeconds / 86400);
+      timeUnit = `${timeDifference} days ago`;
+    } else {
+      // Use the date format for more than 7 days
+      timeUnit = new Date(createdAt).toLocaleDateString('en-us');
+    }
+
+    const productName = orderItems[0]?.variations.name || 'Product Name Not Available';
+    console.log(orderItems);
     const customerName = user?.username || 'Customer Name Not Available';
     const shopName = fromShop?.name || 'Shop is not Available';
 
     return createData(
       _id,
-      `${productName}, ${orderItems.length - 1} more`,
-      date,
+      // `${productName}, ${orderItems.length - 1} more`,
+      `${productName}, ${orderItems.length === 1 ? [] : orderItems?.cartItems?.length - 1, ' more' }`,
+      timeUnit,
       customerName,
       `$${ccyFormat(totalAmount)}`,
       paymentMethod,
@@ -262,3 +285,5 @@ function OrderPage() {
 }
 
 export default OrderPage;
+
+

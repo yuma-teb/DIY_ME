@@ -44,7 +44,7 @@ const SearchOrder = () => {
             <ListItemButton>
               <ListItemText
                 primary={
-                  `${searchedOrders?.orderItems?.[0]?.product?.name} and ${
+                  `${searchedOrders?.orderItems?.cartItems[0]?.variations?.name} and ${
                     searchedOrders?.orderItems.length - 1
                   } more` || 'Product name not available'
                 }

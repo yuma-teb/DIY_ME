@@ -24,16 +24,11 @@ const OrderListDetail = () => {
     isLoading: fetchOrderLoading,
   } = useFetchOrderByIdQuery(id);
   const orders = orderData?.data?.doc?.orderItems || [];
-
+  console.log(orders)
   if (fetchOrderLoading) {
     console.log('Loading...');
   }
 
-  const TAX_RATE = 0.07;
-
-  const ccyFormat = (num) => {
-    return `${num.toFixed(2)}`;
-  };
 
   const priceRow = (qty, price) => {
     return qty * price;
@@ -49,12 +44,11 @@ const OrderListDetail = () => {
   };
 
   const createDataFromOrder = (order, index) => {
-    const { id, qty } = order;
-    const product = order?.product?.name || 'Product Name Not Available';
-    console.log(product);
-    const price = order?.product?.price;
+    const { id, quantity } = order;
+    const product = order?.variations?.name || 'Product Name Not Available';
+    const price = order?.variations?.price || 0;
 
-    return createRow(product, id, qty, price);
+    return createRow(product, id, quantity, price);
   };
 
   const rowsFromOrders = Array.isArray(orders)
@@ -99,18 +93,18 @@ const OrderListDetail = () => {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={rows._id}>
-              <TableCell align="center">{row._id}</TableCell>
-              <TableCell align="center">{row.productName}</TableCell>
-              <TableCell align="center">{row.qty}</TableCell>
-              <TableCell align="center">${ccyFormat(row.price)}</TableCell>
-              <TableCell align="center">${ccyFormat(row.total)}</TableCell>
-            </TableRow>
+            <TableRow key={row._id}>
+            <TableCell align="center">{row._id}</TableCell>
+            <TableCell align="center">{row.productName}</TableCell>
+            <TableCell align="center">{row.qty}</TableCell>
+            <TableCell align="center">${row.price.toFixed(2)}</TableCell>
+            <TableCell align="center">${row.total.toFixed(2)}</TableCell>
+          </TableRow>
           ))}
           <TableRow>
             <TableCell rowSpan={2} colSpan={3} />
             <TableCell colSpan={1}>Total</TableCell>
-            <TableCell align="center">${ccyFormat(total)}</TableCell>
+            <TableCell align="center">${total.toFixed(2)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
