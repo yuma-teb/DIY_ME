@@ -7,6 +7,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HomeIcon from '@mui/icons-material/Home';
 import ForumIcon from '@mui/icons-material/Forum';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   const sideBarStyle = { backgroundColor: '#D0B8AC', height: '100vh', width: 319 };
@@ -26,14 +27,14 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           onClick={toggleSidebar}
         />
         <List sx={{ marginTop: 5 }}>
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home Page" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/products">
             <ListItemIcon>
               <StoreIcon />
             </ListItemIcon>
@@ -59,18 +60,11 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             <ListItemText primary="Orders" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
-            <ListItemIcon>
-              <FavoriteBorderIcon />
-            </ListItemIcon>
-            <ListItemText primary="Wish List" />
-          </ListItem>
-
           <Divider variant="middle" />
           <ListItem>
             <ListItemText primary="Community" />
           </ListItem>
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/community">
             <ListItemIcon>
               <ForumIcon />
             </ListItemIcon>

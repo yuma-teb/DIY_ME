@@ -9,7 +9,7 @@ import { useInfiniteQuery } from 'react-query';
 const ProductListByCategory = ({ categoryId, sorted }) => {
   const fetchProducts = async (page = 1) => {
     const response = await axios.get(
-      `http://localhost:3000/api/v1/product?page=${page}&limit=8&category=${categoryId}&sort=${sorted}`,
+      `http://54.169.120.80/api/v1/product?page=${page}&limit=8&category=${categoryId}&sort=${sorted}`,
     );
     return response;
   };

@@ -50,7 +50,7 @@ const ideaCards = [
 ];
 
 function HomePage() {
-  const token = JSON.parse(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
   // fetch category data
   const {
     data: dataCategories,
