@@ -198,44 +198,64 @@ module.exports = {
     //   return next();
     // }
     let imageName = '';
+
     if (req.file) {
       // generate filesName for the user images
       imageName = randomImagesName();
-
       await uploadSingleImageToS3(req, imageName);
     }
 
     console.log('sendAlready');
-
     console.log('Save Already');
-
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return next(new ErrorHandler('Invalid user ID.', 404));
     }
+    // console.log(req.body);
+    let updatedMe;
 
-    const updatedMe = await User.findByIdAndUpdate(
-      req.params.id,
-      { avatar: imageName, ...req.body },
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
-    if (!updatedMe) {
-      return next(new ErrorHandler('User not found', 404));
+    if (req.file) {
+      updatedMe = await User.findByIdAndUpdate(
+        req.params.id,
+        { avatar: imageName, ...req.body },
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
+      // get the image link
+      const imgUrl = await getImage(imageName);
+
+      updatedMe.imgUrl = imgUrl;
+
+      if (!updatedMe) {
+        return next(new ErrorHandler('User not found', 404));
+      }
+
+      res.status(200).json({
+        status: 'success',
+        data: {
+          updatedMe,
+          img: imgUrl,
+        },
+      });
+    } else {
+      updatedMe = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
+      console.log('updated:', updatedMe);
+      if (!updatedMe) {
+        return next(new ErrorHandler('User not found', 404));
+      }
+      res.status(200).json({
+        status: 'success',
+        data: updatedMe,
+      });
     }
-    // get the image link
-    const imgUrl = await getImage(imageName);
-
-    updatedMe.imgUrl = imgUrl;
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        updatedMe,
-        img: imgUrl,
-      },
-    });
   }),
   deleteSelfbyId: catchError(async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

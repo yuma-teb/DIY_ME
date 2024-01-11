@@ -67,6 +67,7 @@ import CreateReport from './pages/BulletinBoard/Community/CreateReport';
 ////////////////////// Community Page ///////////////////
 import CommunityPost from './pages/user/Community';
 import EditPost from './pages/BulletinBoard/Community/EditPost';
+import UserProfile from './pages/user/Profile';
 ////////////////////// Shop Page ///////////////////
 import ShopProduct from './pages/shop/Product';
 import { Roles } from './helpers/Roles';
@@ -179,6 +180,7 @@ function App() {
             <Route path=":id/review" element={<ProductReview />} />
             <Route path='search' element={<UserSearchProduct />} />
           </Route>
+          <Route path="user/profile" element={<PrivateRoute roles={[Roles.User]}><UserProfile /></PrivateRoute>}/>
           <Route path="community">
           <Route index element={<Community />} />
           <Route path="create-post" element={<CreatePost />} />
