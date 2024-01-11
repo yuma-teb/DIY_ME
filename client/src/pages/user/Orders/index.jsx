@@ -64,18 +64,6 @@ function Order() {
             </Link>
           </div>
         </div>
-        <div className="user-payment-info">
-          <h1 className="label-each-step-order">Payment Method</h1>
-          <Paper sx={{ display: 'flex', justifyContent: 'center', padding: '15px' }}>
-            {/* <img src={CreditCard} className="card-size-img" />
-            <span>ABA Bank</span> */}
-            <Link to={`/cart/order/paymentMethod`}>
-              <Button variant="text" sx={{ color: '#49454F' }}>
-                select payment
-              </Button>
-            </Link>
-          </Paper>
-        </div>
         <div className="product-summary-container">
           <h1 className="label-each-step-order">Product Summary</h1>
           {selectedItem.map((item) => (
