@@ -176,7 +176,7 @@ console.log("PRODUCT",resProductFromCategory );
                 </Grid>
                 <Grid item xs={6}>
                   <div className="variation-img-list" onClick={handleClickOverlay}>
-                    <div className="variation-img">{variation[0].name}</div>
+                    <div className="variation-img">{variation[1].name}</div>
                   </div>
                 </Grid>
               </Grid>
