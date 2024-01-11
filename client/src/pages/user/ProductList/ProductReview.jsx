@@ -16,12 +16,13 @@ const ProductReview = () => {
   const resImageReview = dataProductReview?.data?.img;
 
   if (fetchProductReviewLoading) {
-    return <div>Loading product details...</div>;
+    return <div>Loading product review...</div>;
   }
 
   if (fetchProductReviewError) {
-    return <Alert severity="error">Error loading product details!</Alert>;
+    return <Alert severity="error">Error loading product reviews!</Alert>;
   }
+
   return (
     <>
       <Container sx={{ marginTop: '72px' }}>

@@ -38,6 +38,7 @@ const ProductDetail = () => {
   const [productReview, setProductReview] = useState([]);
   const [productReviewImg, setProductReviewImg] = useState([]);
   const [fetchData, setFetchData] = useState(false);
+  const [variation, setVariation] = useState([])
 
   // fetching product by id
   const {
@@ -47,7 +48,6 @@ const ProductDetail = () => {
   } = useFetchProductByIdQuery(id);
   const resProduct = dataProduct?.data?.product || {};
   const reviewAvg = parseFloat(resProduct.ratingAverage).toFixed(1);
-  console.log(resProduct)
 
   const {
     data: dataProductReview,
@@ -66,6 +66,8 @@ const ProductDetail = () => {
       setProductReview(resProductReview);
       setProductReviewImg(resImageReview);
       setFetchData(true);
+      const variationLength = resProduct.variations;
+      setVariation(variationLength)
     }
   }, [dataProduct, dataProductReview]);
 
@@ -85,13 +87,11 @@ const ProductDetail = () => {
   const handleClickOverlay = () => {
     dispatch(openOverlay());
   };
-console.log(resProduct?.shop?._id)
+
   // handle to shop detail
   const handleToShop = () => {
     navigate(`/products/${resProduct._id}/shop`, { state: { shop: resProduct?.shop?._id } });
   };
-
-  // fetch product review
 
   // handle to shop detail
   const handleToReview = () => {
@@ -169,23 +169,41 @@ console.log(resProduct?.shop?._id)
           <Typography typography={'section'} style={sectionPadding}>
             Variations
           </Typography>
-          <Grid container spacing={2}>
-            {resProduct.variations.map((variation, index) => {
-              return (
-                <Grid item xs={6} key={index}>
+          {variation.length > 2 ? (
+            <div>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
                   <div className="variation-img-list" onClick={handleClickOverlay}>
-                    <div className="variation-img">{variation.name}</div>
+                    <div className="variation-img">{variation[0].name}</div>
                   </div>
                 </Grid>
-              );
-            })}
-          </Grid>
-          <div className="d-flex button-variation" onClick={handleClickOverlay}>
-            <IconButton size="small" style={marginButtom}>
-              More Variations
-              <ArrowForwardIcon />
-            </IconButton>
-          </div>
+                <Grid item xs={6}>
+                  <div className="variation-img-list" onClick={handleClickOverlay}>
+                    <div className="variation-img">{variation[0].name}</div>
+                  </div>
+                </Grid>
+              </Grid>
+              <div className="d-flex button-variation" onClick={handleClickOverlay}>
+                <IconButton size="small" style={marginButtom}>
+                  More Variations
+                  <ArrowForwardIcon />
+                </IconButton>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <Grid container spacing={2}>
+                {resProduct.variations.map((variation, index) => (
+                  <Grid item xs={6} key={index}>
+                    <div className="variation-img-list" onClick={handleClickOverlay}>
+                      <div className="variation-img">{variation.name}</div>
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </div>
+          )}
+
           {/* variation overlay */}
           {overlay && (
             <VariationOverlay
