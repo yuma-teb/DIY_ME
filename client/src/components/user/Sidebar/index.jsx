@@ -7,12 +7,21 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HomeIcon from '@mui/icons-material/Home';
 import ForumIcon from '@mui/icons-material/Forum';
 import CloseIcon from '@mui/icons-material/Close';
+import LoginIcon from '@mui/icons-material/Login';
+import { Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { logOut } from '../../../redux/slices/AuthSlice';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   const sideBarStyle = { backgroundColor: '#D0B8AC', height: '100vh', width: 319 };
   const hoverStyle = { '&:hover': { backgroundColor: '#F7F7F7' } };
-
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  const dispatch = useDispatch()
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+  }, [localStorage.getItem('token')])
   return (
     <Drawer
       variant="persistent"
@@ -46,7 +55,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             <ListItemText primary="My Profile" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/user/profile">
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
@@ -71,6 +80,19 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             <ListItemText primary="Community" />
           </ListItem>
         </List>
+        <Divider variant="middle" />
+        {token ?  <ListItem button sx={hoverStyle} onClick={() => dispatch(logOut())}>
+            <ListItemIcon>
+              <Logout />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem> : <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/login">
+            <ListItemIcon>
+              <LoginIcon />
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>}
+
       </div>
     </Drawer>
   );

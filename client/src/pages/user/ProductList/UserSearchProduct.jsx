@@ -35,34 +35,17 @@ const UserSearchProduct = () => {
         },
       },
     );
-
     useEffect(() => {
       let fetching = false;
-      // const onScroll = async (event) => {
-      //   const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-      //   if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
-      //     fetching = true;
-      //     if (hasNextPage) await fetchNextPage();
-      //     fetching = false;
-      //   }
-      // };
-
       const onScroll = async (event) => {
-        console.log("JAJA", event.target.scrollingElement);
         const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-
-        // Check if there's more data to fetch and not already fetching
-        if (hasNextPage && !fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
+        if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
           fetching = true;
-
-          // Use React.startTransition if needed
-          React.startTransition(async () => {
-            console.log(object);
-            await fetchNextPage();
-            fetching = false;
-          });
+          if (hasNextPage) await fetchNextPage();
+          fetching = false;
         }
       };
+
 
       const wrappedOnScroll = (event) => {
         React.startTransition(() => {
@@ -75,7 +58,7 @@ const UserSearchProduct = () => {
       };
     }, [searchVal, fetchProducts]);
 
-    console.log(data);
+    console.log("Data", data);
 
     return (
       <Grid container spacing={1.2} sx={{ marginTop: '16px', marginBottom: '16px' }}>
@@ -98,6 +81,15 @@ const UserSearchProduct = () => {
       </Grid>
     );
   };
+
+  const fetchProducts = async (page = 1) => {
+    const response = await axios.get(
+      `http://localhost:3000/api/v1/product/search/${searchVal}?page=${page}&limit=8`,
+    );
+   console.log(response);
+   return
+  };
+  fetchProducts();
 
   const handleSearchInputChange = (e) => {
     setSearchVal(e.target.value);

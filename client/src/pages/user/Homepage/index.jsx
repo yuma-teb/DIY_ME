@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Homepage.css';
 import { Link } from 'react-router-dom';
 import ProductCard from '../../../components/user/ProductCard';
@@ -50,7 +50,11 @@ const ideaCards = [
 ];
 
 function HomePage() {
-  const token = localStorage.getItem('token');
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  useEffect(() => {
+   setToken(localStorage.getItem('token'))
+  }, [localStorage.getItem('token')])
+
   // fetch category data
   const {
     data: dataCategories,

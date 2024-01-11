@@ -9,9 +9,9 @@ const usersApi = apiSlice.injectEndpoints({
     return {
       editSelf: builder.mutation({
         invalidatesTags: ['User'],
-        query: (updatedUser) => {
+        query: ({ id, updatedUser }) => {
           return {
-            url: `/users/${updatedUser.get('id')}/update`,
+            url: `/users/${id}/update`,
             method: 'PATCH',
             body: updatedUser,
           };

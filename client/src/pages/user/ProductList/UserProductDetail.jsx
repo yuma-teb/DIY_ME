@@ -120,7 +120,7 @@ const ProductDetail = () => {
   const sectionPadding = {
     padding: '8px 0',
   };
-
+console.log("PRODUCT",resProductFromCategory );
   return (
     <>
       <div className="carousel-img">
@@ -252,16 +252,19 @@ const ProductDetail = () => {
         </Typography>
         <Grid container spacing={1.2}>
           {resProductFromCategory.map((product) => {
-            return (
+            return <>
+            { product._id !== id ?
               <ProductCard
-                key={product._id}
-                img={product.imagesLink}
-                price={product.price}
-                name={product.name}
-                rating={product.ratingAverage}
-                sold={product.sold}
-              />
-            );
+              key={product._id}
+              img={product.imagesLink[0]}
+              price={product.price}
+              name={product.name}
+              rating={product.ratingAverage}
+              sold={product.sold}
+              productId={product._id}
+            /> : ""
+            }
+            </>
           })}
         </Grid>
       </Container>
