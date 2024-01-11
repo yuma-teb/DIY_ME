@@ -1,10 +1,11 @@
-const Order = require('../models/OrderModel');
-// const Product = require('../models/ProductModel');
+const Order = require("../models/OrderModel");
+const Product = require("../models/ProductModel");
 // const APIFeatures = require('../utils/ApiFeatures');
 // const ErrorHandler = require('../utils/ErrorHandler');
-const CatchError = require('../middleware/CatchError');
-const factoryHandler = require('./FactoryHandler');
-const Cart = require('../models/Cart')
+const CatchError = require("../middleware/CatchError");
+const factoryHandler = require("./FactoryHandler");
+const Cart = require("../models/Cart");
+const ErrorHandler = require("../utils/ErrorHandler");
 
 module.exports = {
   // Get All order
@@ -40,65 +41,83 @@ module.exports = {
   // Posting the order
   createOrder: CatchError(async (req, res, next) => {
     try {
-      const { user, fromShop, paymentMethod, selectedItem, orderCompleted, deliveredAt } = req.body;
+      const {
+        user,
+        fromShop,
+        paymentMethod,
+        selectedItem,
+        orderCompleted,
+        deliveredAt,
+        isPaid,
+        paidAt,
+      } = req.body;
       const cart = await Cart.findOne({ user });
-      // console.log(cart);
-      if (!cart || !cart.cartItems || cart.cartItems.length === 0) {
-        throw new ErrorHandler(404, 'Cart is empty');
-      }
+      // console.log(cart)
 
       const order = new Order({
         user,
         fromShop,
         paymentMethod,
         orderItems: selectedItem,
+        isPaid,
+        paidAt,
         orderCompleted,
         deliveredAt,
       });
 
-      // // If order is successfully created
-      // if (order) {
-      //   // Prepare bulk write operations to update variation stock
-      //   const bulkOptions = order.orderItems.map((item) => ({
-      //     updateOne: {
-      //       filter: {
-      //         _id: item.variations,
-      //       },
-      //       update: { $inc: { sold: item.quantity, stock: -item.quantity } },
-      //     },
-      //   }));
-      //   console.log(bulkOptions);
-
-      //   // Execute the bulk write operation
-      //   await Product.bulkWrite(bulkOptions);
-      // }
-
       await order.save();
+
+      // Remove items from the cart
+      for (const item of selectedItem) {
+        console.log(item);
+        const itemIndex = cart.cartItems.findIndex(
+          (cartItem) =>
+            cartItem.product.toString() === item.product.toString() &&
+            cartItem.variationIndex === item.variationIndex
+        );
+        console.log("Item Index:", itemIndex);
+        console.log("Cart Item:", cart.cartItems[itemIndex]);
+
+        if (itemIndex !== -1) {
+          cart.cartItems.splice(itemIndex, 1);
+        }
+      }
+
+      // Save the updated cart
+      await cart.save();
       res.status(201).json({
-        status: 'success',
+        status: "success",
         data: order,
       });
     } catch (err) {
       res.status(404).json({
-        status: 'fail',
+        status: "fail",
         message: err,
       });
     }
   }),
   updateOrder: factoryHandler.updateOneById(Order),
-  // updateOrder: catchError(async (req, res, next) => {
-  //   const updateOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {
-  //     new: true,
-  //     runValidators: true,
-  //   });
-  //   if (!updateOrder) {
-  //     return next(new ErrorHandler('Order not found', 404));
-  //   }
-  //   res.status(200).json({
-  //     status: 'Success',
-  //     updateData: updateOrder,
-  //   });
-  // }),
+
+  getUserOrder: CatchError(async (req, res, next) => {
+    try {
+      const userId = req.params.userId;
+      const order = await Order.find({ user: userId });
+      console.log(order);
+
+      if (!order || order.length === 0) {
+        throw new ErrorHandler(404, "User doesn't have any order history");
+      }
+      res.status(200).json({
+        status: "success",
+        data: order,
+      });
+    } catch (err) {
+      res.status(404).json({
+        status: "fail",
+        message: err,
+      });
+    }
+  }),
   deleteOrder: factoryHandler.deleteOnebyId(Order),
   // deleteOrder: catchError(async (req, res, next) => {
   //   await Order.findByIdAndDelete(req.params.id);

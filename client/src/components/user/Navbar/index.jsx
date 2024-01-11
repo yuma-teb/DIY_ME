@@ -3,9 +3,15 @@ import { AppBar, Toolbar, Typography, IconButton, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useFetchCartByUserIdQuery } from '../../../redux/store';
 
 const Navbar = ({ toggleSidebar }) => {
-  const cartItemCount = 3;
+  const user = JSON.parse(localStorage.getItem('user'));
+  const { data, isLoading, error } = useFetchCartByUserIdQuery(user?._id);
+  const cartItem = data?.data?.cartItems;
+  const cartItemCount = cartItem?.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
   return (
     <AppBar position="fixed" sx={{ background: 'primary' }}>
       <Toolbar>

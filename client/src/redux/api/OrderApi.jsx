@@ -46,21 +46,43 @@ const ordersApi = apiSlice.injectEndpoints({
         },
         invalidatesTags: ['Order'],
       }),
-      updateLocationById: builder.mutation({
-        query: (updateLoc) => {
-          return {
-            url: `/orders/${updateLoc.id}`,
-            method: 'PATCH ',
-            body: updateLoc,
-          };
-        },
-      }),
+      // updateLocationById: builder.mutation({
+      //   query: (updateLoc) => {
+      //     return {
+      //       url: `/orders/${updateLoc.id}`,
+      //       method: 'PATCH ',
+      //       body: updateLoc,
+      //     };
+      //   },
+      // }),
       deleteOrderById: builder.mutation({
         query: (id) => ({
           url: `/orders/${id}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['Order'],
+      }),
+      payOrder: builder.mutation({
+        query: (order) => ({
+          url: `/orders/${order.id}/paymentMethod`,
+          method: 'PATCH',
+          body: { ...order },
+        }),
+      }),
+      getPayPalClientId: builder.query({
+        query: () => ({
+          url: `/paypal`,
+        }),
+        keepUnusedDataFor: 5,
+      }),
+      getUserAllOrder: builder.query({
+        query: (userId) => {
+          return {
+            url: `/orders/orderHistory/${userId}`,
+            method: 'GET',
+          };
+        },
+        invalidatesTags: ['Order']
       }),
       fetchShopOrders: builder.query({
         query: (id) => {
@@ -87,8 +109,11 @@ export const {
   useFetchOrderByIdQuery,
   useDeleteOrderByIdMutation,
   useUpdateStatusByIdMutation,
-  useUpdateLocationByIdMutation,
+  // useUpdateLocationByIdMutation,
   useCreateOrderMutation,
   useFetchShopOrdersQuery,
+  usePayOrderMutation,
+  useGetPayPalClientIdQuery,
+  useGetUserAllOrderQuery
 } = ordersApi;
 export { ordersApi };

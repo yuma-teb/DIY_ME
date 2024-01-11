@@ -68,6 +68,8 @@ import Cart from './pages/user/Cart';
 import Order from './pages/user/Orders';
 import ShippingAddress from './pages/user/Orders/ShippingAddress';
 import PaymentMethod from './pages/user/Payment/PaymentMethod';
+import SuccessStatus from './pages/user/Payment/SucessStatus';
+import OrderHistory from './pages/user/Orders/UserOrderHistory';
 
 ////////////////////// Community Page ///////////////////
 import CommunityPost from './pages/user/Community';
@@ -188,6 +190,10 @@ function App() {
             <Route path="order" element={<Order />} />
             <Route path="order/shippingAddress" element={<ShippingAddress />} />
             <Route path="order/paymentMethod" element={<PaymentMethod />} />
+            <Route path="order/paymentMethod/success" element={<SuccessStatus />} />
+          </Route>
+          <Route path="OrderHistory">
+            <Route index element={<OrderHistory />} />
           </Route>
           <Route path="community">
             <Route index element={<Community />} />

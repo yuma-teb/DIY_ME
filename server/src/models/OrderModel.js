@@ -3,37 +3,44 @@
 /* eslint-disable no-console */
 /* eslint-disable array-callback-return */
 /* eslint-disable arrow-body-style */
-const mongoose = require('mongoose');
-const Product = require('./ProductModel');
+const mongoose = require("mongoose");
+const Product = require("./ProductModel");
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectID,
       required: true,
-      ref: 'User',
+      ref: "User",
     },
     fromShop: {
       type: mongoose.Schema.Types.ObjectID,
       required: true,
-      ref: 'Shop',
+      ref: "Shop",
     },
     paymentMethod: {
       type: String,
+      require: true,
+    },
+    paymentResult: {
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: String },
+      email_address: { type: String },
     },
     shippingAddress: {
       address: {
         type: String,
-        require: [true, 'Delivery address must provide'],
+        require: [true, "Delivery address must provide"],
       },
       city: {
         type: String,
-        require: [true, 'City must provide'],
+        require: [true, "City must provide"],
       },
     },
     orderItems: [
       {
-        product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
         quantity: { type: Number },
         variations: {
           name: String,
@@ -47,17 +54,17 @@ const orderSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      default: 'pending',
+      default: "pending",
       enum: [
-        'pending',
-        'on the way',
-        'shipped',
-        'delivered',
-        'canceled',
-        'Not yet Refund',
-        'refunded',
-        'Not yet Return',
-        'returned',
+        "pending",
+        "on the way",
+        "shipped",
+        "delivered",
+        "canceled",
+        "Not yet Refund",
+        "refunded",
+        "Not yet Return",
+        "returned",
       ],
     },
     orderCompleted: {
@@ -84,30 +91,30 @@ const orderSchema = new mongoose.Schema(
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     timestamps: true,
-  },
+  }
 );
 
-orderSchema.index({ status: 'text' });
+orderSchema.index({ status: "text" });
 
 orderSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'user',
-    model: 'User',
-    select: 'username phone address email',
+    path: "user",
+    model: "User",
+    select: "username phone address email",
   })
     .populate({
-      path: 'fromShop',
-      model: 'Shop',
-      select: 'name',
+      path: "fromShop",
+      model: "Shop",
+      select: "name",
     })
     .populate({
-      path: 'orderItems',
-      model: 'Cart',
-      select: '-user',
+      path: "orderItems",
+      model: "Cart",
+      select: "-user",
     });
   next();
 });
-orderSchema.virtual('totalAmount').get(function () {
+orderSchema.virtual("totalAmount").get(function () {
   // // Check if orderItems is defined
   // if (!this.orderItems || !Array.isArray(this.orderItems)) {
   //   return 0; // or handle the case when orderItems or cartItems is not defined
@@ -123,19 +130,19 @@ orderSchema.virtual('totalAmount').get(function () {
 
   return orderTotal.toFixed(2);
 });
-orderSchema.pre('save', async function (next) {
+orderSchema.pre("save", async function (next) {
   try {
     // Iterate through orderItems and update product stock
     for (const orderItem of this.orderItems) {
       const product = await Product.findById(orderItem.product);
 
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error("Product not found");
       }
 
       // Check if there is enough stock for the order
       if (orderItem.quantity > product.variations.stock) {
-        throw new Error('Insufficient stock for the product');
+        throw new Error("Insufficient stock for the product");
       }
 
       // Update product stock
@@ -149,6 +156,6 @@ orderSchema.pre('save', async function (next) {
   }
 });
 
-const Order = mongoose.model('Order', orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
 module.exports = Order;

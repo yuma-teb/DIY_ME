@@ -116,7 +116,7 @@ function Cart() {
 
   return (
     <>
-      <div style={{ backgroundColor: '#D0B8AC', height: '64px' }}></div>
+      <div style={{ backgroundColor: '#D0B8AC', height: '56px' }}></div>
       <CheckoutStep step1 />
       {selectedItems.length === 0 && (
           <Alert severity="warning" sx={{ mt: 2 }}>

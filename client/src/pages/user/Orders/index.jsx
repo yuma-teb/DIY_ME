@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 
 import CreditCard from './ABA.png';
@@ -18,10 +18,11 @@ import Item from './item.jpg';
 import Item2 from './item2.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutStep from '../Cart/CheckoutStep';
-import { useCreateOrderMutation } from '../../../redux/store';
+
 import { useNavigate } from 'react-router-dom';
-import { removeItemAfterOrder } from '../../../redux/slices/orderSlice';
 import { apiSlice } from '../../../redux/api/ApiSlice';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const paperStyle = {
   padding: '15px',
@@ -31,54 +32,16 @@ const paperStyle = {
 };
 
 function Order() {
+  const { id } = useParams();
   const selectedItem = useSelector((state) => state.order.orderItems);
-  const user = JSON.parse(localStorage.getItem('user'));
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [placeOrder, { isLoading: OrderLoading, error: OrderError }] = useCreateOrderMutation();
 
   const totalPrice = selectedItem.reduce((total, item) => {
     return total + item.quantity * item.variations.price;
   }, 0);
 
-  const handleSubmitPlaceOrder = async (e) => {
-
-    try {
-      e.preventDefault();
-      console.log('Request Payload:', {
-        user: user?._id,
-        fromShop: '658bc998e7e2d8e16ffe28f1',
-        paymentMethod: 'Paypal',
-        selectedItem,
-      });
-
-        // Assuming you have a paymentStatus variable indicating success or failure
-      const paymentStatus = 'Paypal'; /* your logic to check payment status */
-
-      // Check if payment is not successful
-      if (!paymentStatus) {
-        navigate('/cart/order/paymentMethod');
-        return;
-      }
-
-      // If payment is successful, proceed with placing the order
-      const result = await placeOrder({
-        user: user?._id,
-        fromShop: '658bc998e7e2d8e16ffe28f1',
-        paymentMethod: 'Paypal',
-        selectedItem
-      });
-
-      console.log(result);
-      // navigate('/cart/order/success')
-      // Process the result if needed
-    } catch (error) {
-      console.error('Error placing order:', error);
-    }
-  };
   return (
     <>
-      <div style={{ backgroundColor: '#D0B8AC', height: '64px' }}></div>
+      <div style={{ backgroundColor: '#D0B8AC', height: '56px' }}></div>
       <CheckoutStep step2 />
       <Container>
         <div className="contain-address-user-info">
@@ -249,11 +212,10 @@ function Order() {
               />
             </ListItem>
           </Paper>
-          <Link to={`/cart/order/sucess`}>
+          <Link to={`/cart/order/paymentMethod`}>
             <Button
               sx={{ width: '100%', marginTop: '30px', color: '#FFFFFF', marginBottom: '30px' }}
               variant="contained"
-              onClick={handleSubmitPlaceOrder}
             >
               Procceed
             </Button>

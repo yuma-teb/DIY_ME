@@ -6,6 +6,7 @@ import StepLabel from '@mui/material/StepLabel';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaymentIcon from '@mui/icons-material/Payment';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import './index.css'
 
 const steps = ['Cart', 'Payment', 'Completed'];
 

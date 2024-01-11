@@ -108,3 +108,29 @@
   align-items: center;
   gap: 20px;
 }
+
+.status-order{
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.product-summary{
+  display: flex;
+  justify-content: space-between;
+  width: 310px;
+}
+.order-id{
+  overflow: hidden;
+  width: 200px;
+}
+.order-summary-container {
+  display: flex;
+  gap: 18px;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.label-order-history{
+  padding: 20px;
+  margin-top: 10px;
+}

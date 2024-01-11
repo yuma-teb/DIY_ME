@@ -18,17 +18,13 @@ const orderSlice = createSlice({
         state.orderItems.push(newItem);
       }
     },
-    removeItemAfterOrder: (state, action) => {
-      const itemToRemove = action.payload;
-      state.orderItems = state.orderItems.filter((item) => item.id !== itemToRemove.id);
-    },
     clearCart: (state) => {
       state.orderItems = [];
     },
   },
 });
 
-export const { addToOrder, removeItemAfterOrder } = orderSlice.actions;
+export const { addToOrder, clearCart } = orderSlice.actions;
 
 export const orderReducer = orderSlice.reducer;
 // addShippingAddress: (state, action) => {

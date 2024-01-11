@@ -74,8 +74,11 @@ export {
   useFetchOrderByIdQuery,
   useDeleteOrderByIdMutation,
   useUpdateStatusByIdMutation,
-  useUpdateLocationByIdMutation,
-  useCreateOrderMutation
+  // useUpdateLocationByIdMutation,
+  useCreateOrderMutation,
+  usePayOrderMutation,
+  useGetPayPalClientIdQuery,
+  useGetUserAllOrderQuery
 } from './api/OrderApi';
 export {
   useFetchAllProductsQuery,
@@ -129,6 +132,4 @@ export {
   useRemoveItemFromCartByItemIdMutation,
 } from './api/CartApi';
 
-export {
-  useFetchAllProductReviewsQuery,
-} from './api/ProductReviewApi'
+export { useFetchAllProductReviewsQuery } from './api/ProductReviewApi';

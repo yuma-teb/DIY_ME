@@ -53,7 +53,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             <ListItemText primary="View Profile" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/OrderHistory">
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>

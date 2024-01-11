@@ -166,7 +166,7 @@ function OrderPage() {
     return createData(
       _id,
       // `${productName}, ${orderItems.length - 1} more`,
-      `${productName}, ${orderItems.length === 1 ? [] : orderItems?.cartItems?.length - 1, ' more' }`,
+      `${productName}${orderItems.length === 1 ? '' : `, ${orderItems.length - 1} more`}`,
       timeUnit,
       customerName,
       `$${ccyFormat(totalAmount)}`,
