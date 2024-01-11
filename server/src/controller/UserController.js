@@ -28,7 +28,7 @@ module.exports = {
     try {
       const emailVerifiedToken = crypto.randomBytes(20).toString('hex');
       const newUser = await User.create({
-        username: `${req.body.firstName} ${req.body.lastName}$`,
+        username: `${req.body.firstName} ${req.body.lastName}`,
         firstName: req.body.firstname,
         lastName: req.body.lastName,
         email: req.body.email,
