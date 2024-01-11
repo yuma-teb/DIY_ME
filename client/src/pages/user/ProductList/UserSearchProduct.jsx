@@ -27,21 +27,43 @@ const UserSearchProduct = () => {
         getNextPageParam: (lastPage, allPages) => {
           const maxPages = (lastPage.data.allSearchedProducts / 8) + 1;
           const nextPage = allPages.length + 1;
-          return nextPage <= maxPages ? nextPage : undefined;
+          if (nextPage <= maxPages && lastPage.data.nextPage) {
+            return nextPage;
+          }
+          console.log("LOVE YOU");
+          return undefined;
         },
       },
     );
 
     useEffect(() => {
       let fetching = false;
+      // const onScroll = async (event) => {
+      //   const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
+      //   if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
+      //     fetching = true;
+      //     if (hasNextPage) await fetchNextPage();
+      //     fetching = false;
+      //   }
+      // };
+
       const onScroll = async (event) => {
+        console.log("JAJA", event.target.scrollingElement);
         const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
-        if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
+
+        // Check if there's more data to fetch and not already fetching
+        if (hasNextPage && !fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
           fetching = true;
-          if (hasNextPage) await fetchNextPage();
-          fetching = false;
+
+          // Use React.startTransition if needed
+          React.startTransition(async () => {
+            console.log(object);
+            await fetchNextPage();
+            fetching = false;
+          });
         }
       };
+
       const wrappedOnScroll = (event) => {
         React.startTransition(() => {
           onScroll(event);

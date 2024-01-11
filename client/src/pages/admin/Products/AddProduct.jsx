@@ -120,9 +120,15 @@ const AddProductPage = () => {
     formDataWithImages.append('price', lowestPrice);
     formDataWithImages.append('stock', totalStock);
 
-    await addProductMutation(formDataWithImages);
-    dispatch(clearVariations());
-    navigate('/shop/product');
+   const res =  await addProductMutation(formDataWithImages);
+   console.log("### RES", res);
+    if(res.data.status === "success") {
+      dispatch(clearVariations());
+      navigate('/shop/product');
+    } else {
+      return <h1> Error hz bro</h1>
+    }
+
   };
 
   return (
