@@ -16,7 +16,7 @@ const UserSearchProduct = () => {
   const SearchResults = ({ searchVal }) => {
     const fetchProducts = async (page = 1) => {
       const response = await axios.get(
-        `http://localhost:3000/api/v1/product/search/${searchVal}?page=${page}&limit=8`,
+        `${import.meta.env.VITE_BACKEND_URL}/product/search/${searchVal}?page=${page}&limit=8`,
       );
       return response;
     };
