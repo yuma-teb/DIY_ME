@@ -33,19 +33,15 @@ function Cart() {
   const [updateQtyItem, { error: updateQtyError, isLoading: updateQtyLoading }] =
     useUpdateQuantityItemByItemIdMutation();
 
-  // const totalAmount = data?.data?.totalPrice;
-  // const totalQuantity = data?.data?.totalQuantity;
 
   const [cart, setCart] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  // const [totalPrice, setTotalPrice] = useState(0);
-  // const [totalQty, setTotalQty] = useState(0);
+
   useEffect(() => {
     if (data) {
       const cartItems = data?.data?.cartItems;
       setCart(cartItems);
-      // setTotalPrice(totalAmount);
-      // setTotalQty(totalQuantity);
+
     }
   }, [data]);
 

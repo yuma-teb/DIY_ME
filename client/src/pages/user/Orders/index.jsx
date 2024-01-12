@@ -2,37 +2,26 @@ import React from 'react';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { Container, Button, Paper } from '@mui/material';
 import './index.css';
-import ButtonComponent from '../../../components/admin/Button';
-import List from '@mui/material/List';
+
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Link, useParams } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
 
-import CreditCard from './ABA.png';
 import Item from './item.jpg';
-import Item2 from './item2.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutStep from '../Cart/CheckoutStep';
 
-import { useNavigate } from 'react-router-dom';
-import { apiSlice } from '../../../redux/api/ApiSlice';
-import { useEffect } from 'react';
-import { toast } from 'react-toastify';
-
-const paperStyle = {
-  padding: '15px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-};
+// const paperStyle = {
+//   padding: '15px',
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'space-between',
+// };
 
 function Order() {
-  const { id } = useParams();
   const selectedItem = useSelector((state) => state.order.orderItems);
 
   const totalPrice = selectedItem.reduce((total, item) => {

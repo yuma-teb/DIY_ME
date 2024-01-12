@@ -16,12 +16,19 @@ function OrderHistory() {
           <h1 className="label-order-history">Order History</h1>
           {order?.map((item) => (
             <Paper sx={{ width: '100%', bgcolor: 'background.paper' }}>
-              <ListItem alignItems="flex-start" sx={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+              <ListItem
+                alignItems="flex-start"
+                sx={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
+              >
+                <div className="status-order">
+                  <h1 className="order-id">OrderID:{item?._id}</h1>
+                  <h1 style={StatusType(item.status)}>{item.status}</h1>
+                </div>
                 {item?.orderItems.map((element) => (
                   <>
-                    <div className='product-summary'>
+                    <div className="product-summary">
                       <ListItemText
-                        sx={{ marginLeft: '15px'}}
+                        sx={{ marginLeft: '15px' }}
                         primary={element.variations.name}
                         secondary={
                           <React.Fragment>
@@ -44,10 +51,6 @@ function OrderHistory() {
                   </>
                 ))}
               </ListItem>
-              <div className="status-order">
-                <h1 className='order-id'>OrderID:{item?._id}</h1>
-                <h1 style={StatusType(item.status)}>{item.status}</h1>
-              </div>
             </Paper>
           ))}
         </div>

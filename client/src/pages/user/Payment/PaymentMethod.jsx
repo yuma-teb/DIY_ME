@@ -10,11 +10,13 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { clearCart } from '../../../redux/slices/orderSlice';
+import { clearOrder } from '../../../redux/slices/orderSlice';
+import { useRemoveItemFromCartByItemIdMutation } from '../../../redux/store';
 
 function PaymentMethod() {
   const selectedItem = useSelector((state) => state.order.orderItems);
-
+  const [removeItem, { error: removeError, isLoading: removeIsLoading }] =
+    useRemoveItemFromCartByItemIdMutation();
   const [placeOrder, { isLoading: OrderLoading, error: OrderError }] = useCreateOrderMutation();
   const [payOrder, { isLoading: LoadingPayment, error: PaymentError }] = usePayOrderMutation();
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -37,7 +39,11 @@ function PaymentMethod() {
     return actions.order.capture().then(async function (details) {
       try {
         await payOrder();
-        await placeOrder({
+
+        // Dynamically determine the fromShop value based on the selected items
+        // const uniqueShopIds = new Set(selectedItem.map((item) => item.shopId));
+
+        const result = await placeOrder({
           user: user?._id,
           fromShop: '658bc998e7e2d8e16ffe28f1',
           paymentMethod: 'Paypal',
@@ -45,6 +51,12 @@ function PaymentMethod() {
           paidAt: Date.now(),
           selectedItem,
         });
+        // Imagine there is a field "orderId" in the result response
+        const orderId = result.data.orderId;
+
+        // update the database to remove item that user had been selected order
+        await removeItem(user?._id, orderId);
+        dispatch(clearOrder());
         navigator('/cart/order/paymentMethod/success');
         toast.success('Payment successful');
       } catch (err) {

@@ -5,7 +5,6 @@ const { restrictTo } = require("../middleware/RestrictRoles");
 const { tokenChecking } = require("../utils/JsonWebToken");
 
 const router = express.Router();
-// tokenChecking, restrictTo("Admin", "Shop"),
 router
   .route('/')
   .get(tokenChecking, restrictTo('Admin', 'Shop', 'Member'), OrderController.getAllOrder)
