@@ -92,14 +92,6 @@ const ordersApi = apiSlice.injectEndpoints({
           };
         },
       }),
-      fetchShopOrders: builder.query({
-        query: (id) => {
-          console.log(id);
-          return {
-            url: `orders?shop=${id}`,
-          };
-        },
-      }),
     };
   },
 });

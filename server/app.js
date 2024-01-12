@@ -19,6 +19,7 @@ const CartRouter = require("./src/routes/CartRoute");
 // const paymentRoutes = require('./src/routes/paymentRoute');
 const ReportRoute = require("./src/routes/ReportRoute");
 const ErrorHandler = require("./src/utils/ErrorHandler");
+const { ChecksumAlgorithm } = require('@aws-sdk/client-s3');
 require("dotenv").config();
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(
     saveUninitialized: false,
   })
 ); // Add this line
+console.log("FDSFSDSDFDS" ,process.env.FRONT_END_URL)
 app.use(cookieParser());
 app.use(cors({ origin: process.env.FRONT_END_URL, credentials: true }));
 app.use(express.json());
