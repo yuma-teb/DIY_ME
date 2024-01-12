@@ -7,7 +7,6 @@ const { restrictTo } = require('../middleware/RestrictRoles');
 require('../utils/GoogleOauth');
 
 const router = express.Router();
-
 router.get(
   '/google',
   passport.authenticate('google', {
@@ -30,7 +29,6 @@ router.get('/success', (req, res) => {
   });
 });
 router.get('/refreshToken', verifyRefreshToken);
-// router.post('/refreshToken', (req, res) => res.send(' LOve'));
 router.post('/resetPassword', authController.resetPassword);
 router.patch('/updateResetPassword/:token', authController.upadateResetPassword);
 

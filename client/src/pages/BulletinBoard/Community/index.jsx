@@ -19,7 +19,7 @@ const Community = () => {
   const userString = localStorage.getItem('user');
   const user = JSON.parse(userString);
 
-  console.log('dg', user._id);
+  // console.log('dg', user._id);
 
   // Ensure that posts are sorted in descending order by createdAt
   // const sortedPosts = posts?.data?.posts
@@ -59,7 +59,8 @@ const Community = () => {
         <Box>
           <Tabs value={value} onChange={handleChange} centered>
             <Tab label="All Post" sx={{ width: '50%' }} />
-            <Tab variant="filled" label="My Post" sx={{ width: '50%' }} />
+            {user?._id && <Tab variant="filled" label="My Post" sx={{ width: '50%' }} />}
+
           </Tabs>
         </Box>
         {value === 0 ? <AllPost /> : <MyPost userId={user._id}/>}

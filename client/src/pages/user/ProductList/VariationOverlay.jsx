@@ -20,10 +20,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useDispatch } from 'react-redux';
 import { openOverlay } from '../../../redux/slices/VariationOverlaySlice';
 import { useAddProductToCartMutation } from '../../../redux/store';
+import { useNavigate } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
 
 const VariationOverlay = ({ openOverlayVariation, variations, productId, variationImg }) => {
   const dispatch = useDispatch();
@@ -31,6 +33,8 @@ const VariationOverlay = ({ openOverlayVariation, variations, productId, variati
   const handleClose = () => {
     dispatch(openOverlay());
   };
+  const token =  localStorage.getItem('token')
+const navigate = useNavigate()
   const [qty, setQty] = useState(0);
   useEffect(() => {
     setSelectedVariationId({
@@ -70,6 +74,11 @@ const VariationOverlay = ({ openOverlayVariation, variations, productId, variati
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!token) {
+      navigate("/login")
+      return
+    }
+
     const { selectedVariation, qty, productId, selectedVariationIndex } = selectedVariationId;
     const result = await addProductToCart({
       user: user?._id,

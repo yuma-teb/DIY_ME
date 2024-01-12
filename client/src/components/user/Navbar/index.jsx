@@ -38,7 +38,7 @@ const Navbar = ({ toggleSidebar }) => {
               <SearchIcon />
             </IconButton>
           </Link>
-          <Link to={'/cart'}>
+          <Link to={user ? '/cart' : "/login"}>
             <IconButton>
               <Badge badgeContent={cartItemCount} color="error">
                 <ShoppingCartIcon />

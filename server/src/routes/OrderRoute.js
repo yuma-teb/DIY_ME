@@ -5,10 +5,10 @@ const { restrictTo } = require("../middleware/RestrictRoles");
 const { tokenChecking } = require("../utils/JsonWebToken");
 
 const router = express.Router();
-// tokenChecking, restrictTo("Admin", "Shop"), 
+// tokenChecking, restrictTo("Admin", "Shop"),
 router
-  .route("/")
-  .get(OrderController.getAllOrder)
+  .route('/')
+  .get(tokenChecking, restrictTo('Admin', 'Shop', 'Member'), OrderController.getAllOrder)
   .post(OrderController.createOrder);
 router
   .route("/:id")

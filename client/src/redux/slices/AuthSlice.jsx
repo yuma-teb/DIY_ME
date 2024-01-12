@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: { user: null, token: null },
@@ -15,6 +16,7 @@ const authSlice = createSlice({
       state.token = null;
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      localStorage.removeItem('img');
     },
   },
 });

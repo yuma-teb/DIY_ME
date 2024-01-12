@@ -5,6 +5,7 @@ import StarIcon from '@mui/icons-material/Star';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 
 function ProductCard({ price, name, rating, sold, img, productId }) {
+
   const navigator = useNavigate()
   const handleOpenDetail = () => {
     navigator(`/products/${productId}`);

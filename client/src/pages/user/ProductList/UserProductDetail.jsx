@@ -120,7 +120,7 @@ const ProductDetail = () => {
   const sectionPadding = {
     padding: '8px 0',
   };
-
+console.log("PRODUCT",resProductFromCategory );
   return (
     <>
       <div className="carousel-img">
@@ -176,7 +176,7 @@ const ProductDetail = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <div className="variation-img-list" onClick={handleClickOverlay}>
-                    <div className="variation-img">{variation[0].name}</div>
+                    <div className="variation-img">{variation[1].name}</div>
                   </div>
                 </Grid>
               </Grid>
@@ -252,16 +252,19 @@ const ProductDetail = () => {
         </Typography>
         <Grid container spacing={1.2}>
           {resProductFromCategory.map((product) => {
-            return (
+            return <>
+            { product._id !== id ?
               <ProductCard
-                key={product._id}
-                img={product.imagesLink}
-                price={product.price}
-                name={product.name}
-                rating={product.ratingAverage}
-                sold={product.sold}
-              />
-            );
+              key={product._id}
+              img={product.imagesLink[0]}
+              price={product.price}
+              name={product.name}
+              rating={product.ratingAverage}
+              sold={product.sold}
+              productId={product._id}
+            /> : ""
+            }
+            </>
           })}
         </Grid>
       </Container>
@@ -272,7 +275,7 @@ const ProductDetail = () => {
           </IconButton>
           <Typography sx={{ fontSize: '14px' }}>View Shop</Typography>
         </div>
-        <Button variant="contained" sx={{ marginRight: '32px' }}>
+        <Button variant="contained" sx={{ marginRight: '32px' }} onClick={handleClickOverlay}>
           Add To card
         </Button>
       </div>

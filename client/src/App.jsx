@@ -74,6 +74,7 @@ import OrderHistory from './pages/user/Orders/UserOrderHistory';
 ////////////////////// Community Page ///////////////////
 import CommunityPost from './pages/user/Community';
 import EditPost from './pages/BulletinBoard/Community/EditPost';
+import UserProfile from './pages/user/Profile';
 ////////////////////// Shop Page ///////////////////
 import ShopProduct from './pages/shop/Product';
 import { Roles } from './helpers/Roles';
@@ -193,8 +194,9 @@ function App() {
             <Route path="order/paymentMethod/success" element={<SuccessStatus />} />
           </Route>
           <Route path="OrderHistory">
-            <Route index element={<OrderHistory />} />
+            <Route index element={<PrivateRoute roles={[Roles.User]}><OrderHistory /></PrivateRoute>} />
           </Route>
+          <Route path="user/profile" element={<PrivateRoute roles={[Roles.User]}><UserProfile /></PrivateRoute>}/>
           <Route path="community">
             <Route index element={<Community />} />
             <Route path="create-post" element={<CreatePost />} />
