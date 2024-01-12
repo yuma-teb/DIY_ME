@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(tokenChecking, restrictTo('Admin', 'Shop'), OrderController.getAllOrder)
+  .get(tokenChecking, restrictTo('Admin', 'Shop', 'Member'), OrderController.getAllOrder)
   .post(OrderController.createOrder);
 router
   .route('/:id')

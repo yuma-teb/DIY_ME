@@ -78,6 +78,15 @@ const usersApi = apiSlice.injectEndpoints({
           method: 'GET',
         }),
       }),
+      fetchUserOrder: builder.query({
+        query: (id) => {
+          console.log("QUERY", id);
+          return {
+            url: `/orders?user=${id}`
+          }
+
+        }
+      })
     };
   },
 });
@@ -178,5 +187,6 @@ export const {
   useEditUserMutation,
   useEditSelfMutation,
   useFetchShopCandidateQuery,
+  useFetchUserOrderQuery,
 } = usersApi;
 export { usersApi };

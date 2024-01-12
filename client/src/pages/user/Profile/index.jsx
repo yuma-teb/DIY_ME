@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { useFetchUserByIdQuery } from '../../../redux/store';
+import { useFetchUserByIdQuery, useFetch4CategoriesQuery } from '../../../redux/store';
+import { useFetchUserOrderQuery } from '../../../redux/api/UserApi';
 import {
   Container,
   Typography,
@@ -34,6 +35,8 @@ const Index = () => {
   const [userInfo, setUserInfo] = useState({});
   const [img, setImg] = useState(localStorage.getItem('img') || null);
   const [editClicked, setEditClicked] = useState(false);
+
+
   useEffect(() => {
     // Retrieve user information from local storage
     const storedUser = localStorage.getItem('user');
@@ -48,6 +51,14 @@ const Index = () => {
     }
   }, [localStorage.getItem('user')]);
 
+
+  const {
+    data: dataOrder,
+    error: fetchOrderError,
+    isLoading: fetchOrderLoading,
+  } = useFetchUserOrderQuery(JSON.parse(localStorage.getItem('user'))._id);
+
+  console.log("DATA", dataOrder);
   // const {
   //   data: userData,
   //   error: fetchUserError,
@@ -175,7 +186,7 @@ const Index = () => {
         </Card>
         <Paper style={cardStatusStyle}>
           <Typography variant="subtitle1" color="text.secondary">
-            Status:
+            Status:    HAHA
           </Typography>
           <div className="d-flex"></div>
         </Paper>
