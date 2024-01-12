@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Homepage.css';
 import { Link } from 'react-router-dom';
 import ProductCard from '../../../components/user/ProductCard';
 import IdeaCard from '../../../components/user/IdeaCard';
 import CategoryCard from '../../../components/user/CategoryCard';
-import { Container, Typography, Button, Grid, IconButton, Card } from '@mui/material';
+import { Container, Typography, Button, Grid, IconButton, Card, Alert } from '@mui/material';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
@@ -50,7 +50,11 @@ const ideaCards = [
 ];
 
 function HomePage() {
-  const token = localStorage.getItem('token');
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  useEffect(() => {
+   setToken(localStorage.getItem('token'))
+  }, [localStorage.getItem('token')])
+
   // fetch category data
   const {
     data: dataCategories,

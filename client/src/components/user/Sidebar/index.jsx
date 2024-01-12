@@ -7,11 +7,29 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HomeIcon from '@mui/icons-material/Home';
 import ForumIcon from '@mui/icons-material/Forum';
 import CloseIcon from '@mui/icons-material/Close';
-
+import LoginIcon from '@mui/icons-material/Login';
+import { Logout } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { logOut } from '../../../redux/slices/AuthSlice';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   const sideBarStyle = { backgroundColor: '#D0B8AC', height: '100vh', width: 319 };
   const hoverStyle = { '&:hover': { backgroundColor: '#F7F7F7' } };
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+  }, [localStorage.getItem('token')])
+
+  // handle the navigate
+const handleLogout= () => {
+  dispatch(logOut())
+  navigate("/")
+}
   return (
     <Drawer
       variant="persistent"
@@ -26,14 +44,14 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           onClick={toggleSidebar}
         />
         <List sx={{ marginTop: 5 }}>
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home Page" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/products">
             <ListItemIcon>
               <StoreIcon />
             </ListItemIcon>
@@ -45,38 +63,44 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             <ListItemText primary="My Profile" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/user/profile">
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText primary="View Profile" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/OrderHistory">
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Orders" />
           </ListItem>
 
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
-            <ListItemIcon>
-              <FavoriteBorderIcon />
-            </ListItemIcon>
-            <ListItemText primary="Wish List" />
-          </ListItem>
-
           <Divider variant="middle" />
           <ListItem>
             <ListItemText primary="Community" />
           </ListItem>
-          <ListItem button sx={hoverStyle} onClick={toggleSidebar}>
+          <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/community">
             <ListItemIcon>
               <ForumIcon />
             </ListItemIcon>
             <ListItemText primary="Community" />
           </ListItem>
         </List>
+        <Divider variant="middle" />
+        {token ?  <ListItem button sx={hoverStyle} onClick={handleLogout}>
+            <ListItemIcon>
+              <Logout />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem> : <ListItem button sx={hoverStyle} onClick={toggleSidebar} component={Link} to="/login">
+            <ListItemIcon>
+              <LoginIcon />
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>}
+
       </div>
     </Drawer>
   );

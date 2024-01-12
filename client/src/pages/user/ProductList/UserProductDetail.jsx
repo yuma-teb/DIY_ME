@@ -19,7 +19,7 @@ import {
   Rating,
   Alert,
 } from '@mui/material';
-import { Carousel } from 'react-carousel-minimal';
+import Carousel from 'better-react-carousel';
 import { openOverlay } from '../../../redux/slices/VariationOverlaySlice';
 import ProductReview from '../../../components/user/ProductReviewCard';
 
@@ -38,6 +38,7 @@ const ProductDetail = () => {
   const [productReview, setProductReview] = useState([]);
   const [productReviewImg, setProductReviewImg] = useState([]);
   const [fetchData, setFetchData] = useState(false);
+  const [variation, setVariation] = useState([]);
 
   // fetching product by id
   const {
@@ -47,7 +48,6 @@ const ProductDetail = () => {
   } = useFetchProductByIdQuery(id);
   const resProduct = dataProduct?.data?.product || {};
   const reviewAvg = parseFloat(resProduct.ratingAverage).toFixed(1);
-  console.log(resProduct)
 
   const {
     data: dataProductReview,
@@ -66,11 +66,10 @@ const ProductDetail = () => {
       setProductReview(resProductReview);
       setProductReviewImg(resImageReview);
       setFetchData(true);
+      const variationLength = resProduct.variations;
+      setVariation(variationLength);
     }
   }, [dataProduct, dataProductReview]);
-
-  // map array of image of product
-  let productImage = productImg.map((image) => ({ image }));
 
   // fetching product data by category
   const {
@@ -85,13 +84,11 @@ const ProductDetail = () => {
   const handleClickOverlay = () => {
     dispatch(openOverlay());
   };
-console.log(resProduct?.shop?._id)
+
   // handle to shop detail
   const handleToShop = () => {
     navigate(`/products/${resProduct._id}/shop`, { state: { shop: resProduct?.shop?._id } });
   };
-
-  // fetch product review
 
   // handle to shop detail
   const handleToReview = () => {
@@ -123,17 +120,17 @@ console.log(resProduct?.shop?._id)
   const sectionPadding = {
     padding: '8px 0',
   };
-
+console.log("PRODUCT",resProductFromCategory );
   return (
     <>
       <div className="carousel-img">
-        <Carousel
-          data={productImage}
-          width="375px"
-          height="300px"
-          slideBackgroundColor="darkgrey"
-          slideImageFit="cover"
-        />
+        <Carousel>
+          {productImg.map((img) => (
+            <Carousel.Item>
+              <img className="carousel-item" src={img} />
+            </Carousel.Item>
+          ))}
+        </Carousel>
       </div>
       <Paper style={marginButtom}>
         <Container>
@@ -169,23 +166,41 @@ console.log(resProduct?.shop?._id)
           <Typography typography={'section'} style={sectionPadding}>
             Variations
           </Typography>
-          <Grid container spacing={2}>
-            {resProduct.variations.map((variation, index) => {
-              return (
-                <Grid item xs={6} key={index}>
+          {variation.length > 2 ? (
+            <div>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
                   <div className="variation-img-list" onClick={handleClickOverlay}>
-                    <div className="variation-img">{variation.name}</div>
+                    <div className="variation-img">{variation[0].name}</div>
                   </div>
                 </Grid>
-              );
-            })}
-          </Grid>
-          <div className="d-flex button-variation" onClick={handleClickOverlay}>
-            <IconButton size="small" style={marginButtom}>
-              More Variations
-              <ArrowForwardIcon />
-            </IconButton>
-          </div>
+                <Grid item xs={6}>
+                  <div className="variation-img-list" onClick={handleClickOverlay}>
+                    <div className="variation-img">{variation[1].name}</div>
+                  </div>
+                </Grid>
+              </Grid>
+              <div className="d-flex button-variation" onClick={handleClickOverlay}>
+                <IconButton size="small" style={marginButtom}>
+                  More Variations
+                  <ArrowForwardIcon />
+                </IconButton>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <Grid container spacing={2}>
+                {resProduct.variations.map((variation, index) => (
+                  <Grid item xs={6} key={index}>
+                    <div className="variation-img-list" onClick={handleClickOverlay}>
+                      <div className="variation-img">{variation.name}</div>
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </div>
+          )}
+
           {/* variation overlay */}
           {overlay && (
             <VariationOverlay
@@ -237,16 +252,19 @@ console.log(resProduct?.shop?._id)
         </Typography>
         <Grid container spacing={1.2}>
           {resProductFromCategory.map((product) => {
-            return (
+            return <>
+            { product._id !== id ?
               <ProductCard
-                key={product._id}
-                img={product.imagesLink}
-                price={product.price}
-                name={product.name}
-                rating={product.ratingAverage}
-                sold={product.sold}
-              />
-            );
+              key={product._id}
+              img={product.imagesLink[0]}
+              price={product.price}
+              name={product.name}
+              rating={product.ratingAverage}
+              sold={product.sold}
+              productId={product._id}
+            /> : ""
+            }
+            </>
           })}
         </Grid>
       </Container>
@@ -257,7 +275,7 @@ console.log(resProduct?.shop?._id)
           </IconButton>
           <Typography sx={{ fontSize: '14px' }}>View Shop</Typography>
         </div>
-        <Button variant="contained" sx={{ marginRight: '32px' }}>
+        <Button variant="contained" sx={{ marginRight: '32px' }} onClick={handleClickOverlay}>
           Add To card
         </Button>
       </div>

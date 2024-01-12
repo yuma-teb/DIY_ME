@@ -15,6 +15,8 @@ import { postsApi } from './api/PostsApi';
 import { commentsApi } from './api/CommentsApi';
 import { productReviewApi } from './api/ProductReviewApi';
 import { variationOverlayReducer } from './slices/VariationOverlaySlice';
+import { CartApi } from './api/CartApi';
+import { orderReducer } from './slices/orderSlice';
 export const store = configureStore({
   reducer: {
     [usersApi.reducerPath]: usersApi.reducer,
@@ -33,6 +35,8 @@ export const store = configureStore({
     variation: variationsReducer,
     variationOverlay: variationOverlayReducer,
     auth: authReducer,
+    [CartApi.reducerPath]: CartApi.reducer,
+    order: orderReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(
@@ -48,6 +52,8 @@ export const store = configureStore({
       postsApi.middleware,
       commentsApi.middleware,
       productReviewApi.middleware,
+      CartApi.middleware,
+
       // refundsApi.middleware,
     );
   },
@@ -68,6 +74,11 @@ export {
   useFetchOrderByIdQuery,
   useDeleteOrderByIdMutation,
   useUpdateStatusByIdMutation,
+  // useUpdateLocationByIdMutation,
+  useCreateOrderMutation,
+  usePayOrderMutation,
+  useGetPayPalClientIdQuery,
+  useGetUserAllOrderQuery
 } from './api/OrderApi';
 export {
   useFetchAllProductsQuery,
@@ -115,5 +126,10 @@ export {
 } from './api/RefundReturnApi';
 
 export {
-  useFetchAllProductReviewsQuery,
-} from './api/ProductReviewApi'
+  useFetchCartByUserIdQuery,
+  useAddProductToCartMutation,
+  useUpdateQuantityItemByItemIdMutation,
+  useRemoveItemFromCartByItemIdMutation,
+} from './api/CartApi';
+
+export { useFetchAllProductReviewsQuery } from './api/ProductReviewApi';

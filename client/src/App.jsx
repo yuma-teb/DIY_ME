@@ -56,7 +56,7 @@ import HomePage from './pages/user/Homepage';
 import ProductList from './pages/user/ProductList';
 import UserProductDetail from './pages/user/ProductList/UserProductDetail';
 import UserSearchProduct from './pages/user/ProductList/UserSearchProduct';
-import UserShopDetail from './pages/shop/UserShopDetail'
+import UserShopDetail from './pages/shop/UserShopDetail';
 import ProductReview from './pages/user/ProductList/ProductReview';
 
 import Community from './pages/BulletinBoard/Community';
@@ -64,9 +64,17 @@ import CreatePost from './pages/BulletinBoard/Community/CeatePost';
 import PostDetail from './pages/BulletinBoard/Community/PostDetail';
 import CreateReport from './pages/BulletinBoard/Community/CreateReport';
 
+import Cart from './pages/user/Cart';
+import Order from './pages/user/Orders';
+import ShippingAddress from './pages/user/Orders/ShippingAddress';
+import PaymentMethod from './pages/user/Payment/PaymentMethod';
+import SuccessStatus from './pages/user/Payment/SucessStatus';
+import OrderHistory from './pages/user/Orders/UserOrderHistory';
+
 ////////////////////// Community Page ///////////////////
 import CommunityPost from './pages/user/Community';
 import EditPost from './pages/BulletinBoard/Community/EditPost';
+import UserProfile from './pages/user/Profile';
 ////////////////////// Shop Page ///////////////////
 import ShopProduct from './pages/shop/Product';
 import { Roles } from './helpers/Roles';
@@ -160,7 +168,6 @@ function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
 
-
         {/* user page */}
 
         <Route
@@ -177,16 +184,27 @@ function App() {
             <Route path=":id" element={<UserProductDetail />} />
             <Route path=":id/shop" element={<UserShopDetail />} />
             <Route path=":id/review" element={<ProductReview />} />
-            <Route path='search' element={<UserSearchProduct />} />
+            <Route path="search" element={<UserSearchProduct />} />
           </Route>
+          <Route path="cart">
+            <Route index element={<Cart />} />
+            <Route path="order" element={<Order />} />
+            <Route path="order/shippingAddress" element={<ShippingAddress />} />
+            <Route path="order/paymentMethod" element={<PaymentMethod />} />
+            <Route path="order/paymentMethod/success" element={<SuccessStatus />} />
+          </Route>
+          <Route path="OrderHistory">
+            <Route index element={<PrivateRoute roles={[Roles.User]}><OrderHistory /></PrivateRoute>} />
+          </Route>
+          <Route path="user/profile" element={<PrivateRoute roles={[Roles.User]}><UserProfile /></PrivateRoute>}/>
           <Route path="community">
-          <Route index element={<Community />} />
-          <Route path="create-post" element={<CreatePost />} />
-          <Route path=":postId" element={<PostDetail />} />
-          <Route path=":postId/create-report" element={<CreateReport />} />
-          <Route path=":postId/:commentId/create-report" element={<CreateReport />} />
-          <Route path=":postId/edit" element={<EditPost />} />
-        </Route>
+            <Route index element={<Community />} />
+            <Route path="create-post" element={<CreatePost />} />
+            <Route path=":postId" element={<PostDetail />} />
+            <Route path=":postId/create-report" element={<CreateReport />} />
+            <Route path=":postId/:commentId/create-report" element={<CreateReport />} />
+            <Route path=":postId/edit" element={<EditPost />} />
+          </Route>
         </Route>
 
         <Route path="/resetPassword">

@@ -45,44 +45,31 @@ const ChangeStatusOrder = (id) => {
     data: orderData,
     error: orderError,
     isLoading: orderLoading,
-    refetch,
   } = useFetchOrderByIdQuery(objectId);
   const [open, setOpen] = React.useState(false);
   const [editStatus, { isLoading: editStatusLoading, isError: editStatusError }] =
     useUpdateStatusByIdMutation();
   const [order, setOrder] = useState({});
   //for Form: Muiltiple textfields
-  const defaultForm = {
-    id: '',
-    productName: '',
-    date: '',
-    username: '',
-    email: '',
-    phone: '',
-    payment: '',
-    shop: '',
-    status: '',
-  };
-  const [formData, setFormData] = useState(defaultForm);
-
+  // const [formData, setFormData] = useState({});
+  const docs = orderData?.data?.doc;
+  console.log(docs);
   useEffect(() => {
     getOrder();
-    refetch();
   }, [orderData]);
 
   const getOrder = () => {
     if (orderData?.data) {
-      setOrder(orderData?.data?.doc);
-      setFormData({
-        id: order?._id,
-        productName: order?.orderItems?.[0]?.product?.name,
-        date: orderData?.data?.doc?.createdAt,
-        username: orderData?.data?.doc?.user?.username || '',
-        email: orderData?.data?.doc?.user?.email || '',
-        phone: orderData?.data?.doc?.user?.phone,
-        payment: orderData?.data?.doc?.paymentMethod,
-        shop: orderData?.data?.doc?.fromShop?.name,
-        status: orderData?.data?.doc?.status,
+      setOrder({
+        id: docs?._id,
+        productName: docs?.orderItems[0]?.variations?.name,
+        date: docs?.createdAt,
+        username: docs?.user?.username || '',
+        email: docs?.user?.email || '',
+        phone: docs?.user?.phone,
+        payment: docs?.paymentMethod,
+        shop: docs?.fromShop?.name,
+        status: docs?.status,
       });
     }
   };
@@ -103,8 +90,8 @@ const ChangeStatusOrder = (id) => {
   };
 
   const handleCloseModal = () => {
-    setFormData({
-      ...formData,
+    setOrder({
+      ...order,
       status: orderData?.data?.doc?.status || '',
     });
 
@@ -112,17 +99,18 @@ const ChangeStatusOrder = (id) => {
   };
 
   const handleFormChange = (event) => {
-    setFormData({
-      ...formData,
+    setOrder({
+      ...order,
       [event.target.name]: event.target.value,
     });
+    console.log(order);
   };
 
   const handleFormSubmit = async (e) => {
     try {
       e.preventDefault();
       // Create a new object with non-empty fields
-      const updatedFields = Object.entries(formData).reduce((acc, [key, value]) => {
+      const updatedFields = Object.entries(order).reduce((acc, [key, value]) => {
         if (value !== '' && value !== undefined) {
           acc[key] = value;
         }
@@ -133,14 +121,12 @@ const ChangeStatusOrder = (id) => {
         console.log('No fields to update.');
         return;
       }
-      const result = await editStatus(updatedFields);
-      // Reset the form to the initial state
-      setFormData(defaultForm);
-      // Close the modal
+      const result = await editStatus(order); // Make sure formData is correctly formatted
+      console.log(result);
+      setOrder(result);
       setOpen(false);
-      await refetch();
     } catch (err) {
-      console.log('error', err);
+      console.error('Error editing status:', err);
     }
   };
 
@@ -176,7 +162,7 @@ const ChangeStatusOrder = (id) => {
                 <Select
                   labelId="demo-simple-select-label2"
                   id="demo-simple-select"
-                  value={formData.status}
+                  value={order.status}
                   label="Status"
                   name="status"
                   onChange={handleFormChange}
@@ -204,7 +190,7 @@ const ChangeStatusOrder = (id) => {
                   name="ID"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.id}
+                  value={docs?._id}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>
@@ -214,7 +200,7 @@ const ChangeStatusOrder = (id) => {
                   name="ProductName"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.productName}
+                  value={docs?.orderItems[0]?.variations?.name}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>
@@ -224,7 +210,7 @@ const ChangeStatusOrder = (id) => {
                   name="shop"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.shop}
+                  value={docs?.shop}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>
@@ -234,7 +220,7 @@ const ChangeStatusOrder = (id) => {
                   name="Date"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.date}
+                  value={docs?.date}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>
@@ -244,7 +230,7 @@ const ChangeStatusOrder = (id) => {
                   name="Username"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.username}
+                  value={docs?.user?.username}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>
@@ -254,7 +240,7 @@ const ChangeStatusOrder = (id) => {
                   name="phone"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.phone}
+                  value={docs?.user?.phone}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>
@@ -264,7 +250,7 @@ const ChangeStatusOrder = (id) => {
                   name="paymentMethod"
                   className="formField-text"
                   style={textFieldStyle}
-                  value={formData.payment}
+                  value={docs?.paymentMethod}
                   onChange={handleFormChange}
                   disabled
                 ></TextField>

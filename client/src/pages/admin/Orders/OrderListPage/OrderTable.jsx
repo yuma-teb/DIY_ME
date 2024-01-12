@@ -123,11 +123,11 @@ const OrderTable = () => {
   const ccyFormat = (num) => {
     return `${num.toFixed(2)}`;
   };
-  const createData = (id, product, date, user, total, payment, shop, status) => {
+  const createData = (id, product, date, user, total, payment, shop, status, imgCover) => {
     return { id, product, date, user, total, payment, shop, status };
   };
   const createDataFromOrder = (order, index) => {
-    const { _id, totalAmount, paymentMethod, createdAt, user, orderItems, fromShop, status } =
+    const { _id, totalAmount, paymentMethod, createdAt, user, orderItems, fromShop, status, imgCover } =
       order;
     const date = new Date(createdAt).toLocaleDateString('en-us');
     const productName = orderItems?.[0]?.product?.name || 'Product Name Not Available';

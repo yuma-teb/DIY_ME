@@ -1,0 +1,25 @@
+.user-profile-dis {
+  background-color: #ece3de;
+  /* display: flex; */
+  flex-direction: column;
+  /* justify-content: center;
+  align-items: center; */
+  padding: 40px;
+  margin-top: 55px;
+}
+
+.non-action {
+  color: #808080;
+}
+
+.textalign {
+  width: 20%;
+  text-align: left;
+  float: left;
+}
+
+.textalign1 {
+  width: 70%;
+  text-align: left;
+  float: left;
+}

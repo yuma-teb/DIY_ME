@@ -19,16 +19,22 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useDispatch } from 'react-redux';
 import { openOverlay } from '../../../redux/slices/VariationOverlaySlice';
+import { useAddProductToCartMutation } from '../../../redux/store';
+import { useNavigate } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
 const VariationOverlay = ({ openOverlayVariation, variations, productId, variationImg }) => {
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem('user'));
   const handleClose = () => {
     dispatch(openOverlay());
   };
+  const token =  localStorage.getItem('token')
+const navigate = useNavigate()
   const [qty, setQty] = useState(0);
   useEffect(() => {
     setSelectedVariationId({
@@ -38,6 +44,8 @@ const VariationOverlay = ({ openOverlayVariation, variations, productId, variati
   }, [qty]);
 
   const [selectedVariationId, setSelectedVariationId] = useState({ qty: 1 });
+  const [addProductToCart, { error: addItemError, isLoading: AddItemCartLoading }] =
+    useAddProductToCartMutation();
 
   const handleClick = (index) => {
     console.log(index);
@@ -64,10 +72,26 @@ const VariationOverlay = ({ openOverlayVariation, variations, productId, variati
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSelectedVariationId({ ...selectedVariationId, qty: qty });
-    console.log(selectedVariationId);
+    if(!token) {
+      navigate("/login")
+      return
+    }
+
+    const { selectedVariation, qty, productId, selectedVariationIndex } = selectedVariationId;
+    const result = await addProductToCart({
+      user: user?._id,
+      cartItems: [
+        {
+          product: productId,
+          quantity: qty,
+          variations: selectedVariation,
+          variationIndex: selectedVariationIndex,
+        },
+      ],
+    });
+    console.log(result);
   };
 
   return (

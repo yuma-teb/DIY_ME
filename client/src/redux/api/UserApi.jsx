@@ -9,9 +9,9 @@ const usersApi = apiSlice.injectEndpoints({
     return {
       editSelf: builder.mutation({
         invalidatesTags: ['User'],
-        query: (updatedUser) => {
+        query: ({ id, updatedUser }) => {
           return {
-            url: `/users/${updatedUser.get('id')}/update`,
+            url: `/users/${id}/update`,
             method: 'PATCH',
             body: updatedUser,
           };
@@ -78,6 +78,15 @@ const usersApi = apiSlice.injectEndpoints({
           method: 'GET',
         }),
       }),
+      fetchUserOrder: builder.query({
+        query: (id) => {
+          console.log("QUERY", id);
+          return {
+            url: `/orders?user=${id}`
+          }
+
+        }
+      })
     };
   },
 });
@@ -178,5 +187,6 @@ export const {
   useEditUserMutation,
   useEditSelfMutation,
   useFetchShopCandidateQuery,
+  useFetchUserOrderQuery,
 } = usersApi;
 export { usersApi };

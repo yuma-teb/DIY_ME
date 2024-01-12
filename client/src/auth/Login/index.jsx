@@ -193,7 +193,7 @@ export default function Index() {
     5: 'Email not found!',
     6: 'Password Incorrect',
     7: 'Invalid Email',
-    8: 'Password is so weak like you',
+    8: 'Password is weak',
     9: ' You must login as an admin!',
   };
 
@@ -315,11 +315,11 @@ export default function Index() {
             </Grid>
           </Grid>
         </Box>
-        <Collapse in={alert == 3}>{returnAlert(3)}</Collapse>
-        <Collapse in={alert == 5}>{returnAlert(5)}</Collapse>
+        <Collapse in={alert}>{returnAlert(alert)}</Collapse>
+        {/* <Collapse in={alert == 5}>{returnAlert(5)}</Collapse>
         <Collapse in={alert == 1}>{returnAlert(1)}</Collapse>
         <Collapse in={alert == 6}>{returnAlert(6)}</Collapse>
-        <Collapse in={alert == 2}>{returnAlert(2)}</Collapse>
+        <Collapse in={alert == 2}>{returnAlert(2)}</Collapse> */}
       </Container>
     </div>
   );

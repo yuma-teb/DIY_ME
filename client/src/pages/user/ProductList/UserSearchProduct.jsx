@@ -27,11 +27,14 @@ const UserSearchProduct = () => {
         getNextPageParam: (lastPage, allPages) => {
           const maxPages = (lastPage.data.allSearchedProducts / 8) + 1;
           const nextPage = allPages.length + 1;
-          return nextPage <= maxPages ? nextPage : undefined;
+          if (nextPage <= maxPages && lastPage.data.nextPage) {
+            return nextPage;
+          }
+          console.log("LOVE YOU");
+          return undefined;
         },
       },
     );
-
     useEffect(() => {
       let fetching = false;
       const onScroll = async (event) => {
@@ -42,6 +45,8 @@ const UserSearchProduct = () => {
           fetching = false;
         }
       };
+
+
       const wrappedOnScroll = (event) => {
         React.startTransition(() => {
           onScroll(event);
@@ -53,7 +58,7 @@ const UserSearchProduct = () => {
       };
     }, [searchVal, fetchProducts]);
 
-    console.log(data);
+    console.log("Data", data);
 
     return (
       <Grid container spacing={1.2} sx={{ marginTop: '16px', marginBottom: '16px' }}>
@@ -76,6 +81,15 @@ const UserSearchProduct = () => {
       </Grid>
     );
   };
+
+  const fetchProducts = async (page = 1) => {
+    const response = await axios.get(
+      `http://localhost:3000/api/v1/product/search/${searchVal}?page=${page}&limit=8`,
+    );
+   console.log(response);
+   return
+  };
+  fetchProducts();
 
   const handleSearchInputChange = (e) => {
     setSearchVal(e.target.value);

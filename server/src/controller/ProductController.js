@@ -10,13 +10,22 @@ const factoryHandler = require('./FactoryHandler');
 module.exports = {
   // create product
   createProduct: CatchError(async (req, res) => {
+
     // initializ session
     const session = await mongoose.startSession();
     /// ///////////////////////// Generate files name ////////////////////////////
     session.startTransaction();
     try {
+      console.log("Files", req.files)
+
       let imageNames = [];
-     
+
+      if (req.files) {
+        imageNames = req.files.map((ok) => randomImagesName())
+      }
+      console.log("Files", imageNames)
+
+
       let categoryId = null;
       if (req.body.category) {
         categoryId = `${req.body.category}`.replace(/"/g, '');
