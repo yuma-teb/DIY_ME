@@ -39,6 +39,7 @@ const PostCard = ({ post, showFullDescription, isLinkEnabled = true }) => {
     description,
     imageLink,
     createdAt,
+    // likes = 100,
     likes = 100,
     comments = totalComments,
     username,
