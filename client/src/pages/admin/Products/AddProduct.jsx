@@ -122,6 +122,7 @@ const AddProductPage = () => {
 
    const res =  await addProductMutation(formDataWithImages);
    console.log("### RES", res);
+   
     if(res.data.status === "success") {
       dispatch(clearVariations());
       navigate('/shop/product');
